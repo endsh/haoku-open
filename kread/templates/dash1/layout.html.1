@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="keywors" content="">
+	<meta name="description" content="">
+	<title>{% block title %}{% block subtitle %}{% endblock %} - {{ config.SITE_TITLE }}{% endblock %}</title>
+	{{ static_meta() }}
+	{% block header_script %}{% endblock %}
+</head>
+<body id="{% block body_id %}{% endblock %}">
+
+<!-- header -->
+<header class="k-header">
+	{% from "snippet/macro.html" import navigation %}
+	{% block header %}
+		<nav class="navbar navbar-default navbar-fixed-top k-navbar" role="navigation">
+			<div class="container">
+				<button class="navbar-toggle" data-toggle="collapse" data-target="#k-navbar-collapse" type="button">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span> 
+				</button>
+				<div class="navbar-header">
+					<a class="navbar-brand" href="/">仪表盘</a>
+				</div>
+				<div id="k-navbar-collapse" class="collapse navbar-collapse">
+					{% block nav %}
+						{{ navigation(current_user) }}
+					{% endblock %}
+				</div>
+			</div>
+		</nav>
+	{% endblock %}
+</header><!-- end header -->
+
+<!-- content -->
+<div class="k-content {% block content_class %}container{% endblock %}">
+	{% block content %}{% endblock %}
+</div><!-- end content -->
+
+<!-- footer -->
+<footer class="k-footer">
+	{% block footer %}
+	{% endblock %}
+</footer><!-- end footer -->
+
+{% block footer_script %}{% endblock %}
+
+{% block stat %}
+{% endblock %}
+</body>
+</html>

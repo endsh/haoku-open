@@ -1,0 +1,117 @@
+{% extends "layout.html" %}
+
+{% block title %}注册账号{% endblock %}
+
+{% block content %}
+<div class="btn btn-default k-logo">K</div>
+<div class="k-box k-input-box k-login-box clearfix">
+	<h3 class="page-header">注册 HaoKu 账号</h3>
+	<div class="k-message">{{ form | alert_first_error }}</div>
+	<form id="register-form" action="{{ url_for('account.register', next=next) }}" method="post">
+		{{ form | kform_inline }}
+		<button type="submit" class="btn btn-primary btn-lg btn-block">马上注册</button>
+	</form>
+	<div class="pull-left">
+		<a href="{{ url_for('account.login', next=next) }}">已有账号？登录。</a>
+	</div>
+</div>
+{% endblock %}  
+
+{% block footer_script %}
+<script type="text/javascript">
+var message = {
+	usernameEmpty: '用户名不能为空',
+	usernameExists: '用户名已经被注册',
+	usernameShort: '用户名长度不能小于6个字符',
+	usernameLong: '用户名长度不能大于18个字符',
+	usernameUnsafe: '用户名只能包含英文字符，数字或下划线',
+	passwordEmpty: '密码不能为空',
+	passwordShort: '密码长度不能小于6个字符',
+	passwordLong: '密码长度不能大于18个字符',
+	passwordUnsafe: '密码只能包含英文字符，数字或其他可见字符',
+	repasswordEmpty: '确认密码不能为空',
+	repasswordDiff: '两次密码不一致',
+	emailEmpty: '邮箱地址不能为空',
+	emailExists: '邮箱已经被注册',
+	emailError: '邮箱格式不正确'
+};
+
+function check_username() {
+	var username = $.trim($('#username').val());
+	if (username.length == 0) {
+		error(message.usernameEmpty);
+	} else if (username.length < 6) {
+		error(message.usernameShort);
+	} else if (username.length > 18) {
+		error(message.usernameLong);
+	} else if (!username.match(/^[\w\d]+[\d\w\_]+$/)) {
+		error(message.usernameUnsafe);
+	} else {
+		return true;
+	}
+	return false;
+}
+$('#username').change(function () {
+	if (check_username()) {
+		$.get('{{ url_for('account.check_username') }}', { username: $.trim($('#username').val()) }, function (data) {
+			if (data.code == 0 && data.exists == 1)
+				error(message.usernameExists);
+		}, 'json');
+	}
+});
+
+function check_password() {
+	var password = $('#password').val();
+	if (password.length == 0) {
+		error(message.passwordEmpty);
+	} else if (password.length < 6) {
+		error(message.passwordShort);
+	} else if (password.length > 18) {
+		error(message.passwordLong);
+	} else if (!password.match(/^[\w\d\-\[\]{}|\\,.\/<>;:'"_`~!@#$%^&*()+= ]+$/)) {
+		error(message.passwordUnsafe);
+	} else {
+		return true;
+	}
+	return false;
+}
+
+function check_repassword() {
+	var password = $('#password').val();
+	var repassword = $('#repassword').val();
+	if (repassword.length == 0) {
+		error(message.repasswordEmpty);
+	} else if (password != repassword) {
+		error(message.repasswordDiff);
+	} else {
+		return true;
+	}
+	return false;
+}
+
+function check_email() {
+	var email = $.trim($('#email').val());
+	if (email.length == 0) {
+		error(message.emailEmpty);
+	} else if (!email.match(/^[\w\d]+[\d\w_.]+@([\d\w]+)\.([\d\w]+)(?:\.[\d\w]+)?$/)) {
+		error(message.emailError);
+	} else {
+		return true;
+	}
+	return false;
+}
+$('#email').change(function () {
+	if (check_email()) {
+		$.get('{{ url_for('account.check_email') }}', { email: $.trim($('#email').val()) }, function (data) {
+			if (data.code == 0 && data.exists == 1)
+				error(message.emailExists);
+		}, 'json');
+	}
+});
+
+$('#register-form').submit(function () {
+	return check_username() && check_password() && check_repassword() && check_email();
+});
+
+</script>
+{% endblock %}

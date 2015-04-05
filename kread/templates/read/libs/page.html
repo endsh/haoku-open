@@ -1,0 +1,43 @@
+{% macro render_pages(endpoint, current_page, count, kwargs={}, limit=20, num=11) %}
+	<ul class="pagination">
+		{% if current_page >= num // 2 %}
+			{% set start = current_page - num // 2 %}
+		{% else %}
+			{% set start = 1 %}
+		{% endif %}
+		{% set total = (count + limit - 1) // limit %}
+		{% if total + 1 <= start + num %}
+			{% set end = total + 1 %}
+		{% else %}
+			{% set end = start + num %}
+		{% endif %}
+
+		{% if current_page == 1 %}
+			<li class="disabled">
+				<a href="javascript:void(0)">上一页</a>
+			</li>
+		{% else %}
+			<li>
+				<a href="{{ url_for(endpoint, page=current_page - 1, **kwargs)}}">上一页</a>
+			</li>
+		{% endif %}
+
+		{% for page in range(start, end) %}
+			{% if current_page == page %}
+				<li class="active"><a href="{{ url_for(endpoint, page=page, **kwargs)}}">{{ page }}</a></li>
+			{% else %}
+				<li><a href="{{ url_for(endpoint, page=page, **kwargs)}}">{{ page }}</a></li>
+			{% endif %}
+		{% endfor %}
+
+		{% if current_page == total %}
+			<li class="disabled">
+				<a href="javascript:void(0)">下一页</a>
+			</li>
+		{% else %}
+			<li>
+				<a href="{{ url_for(endpoint, page=current_page + 1, **kwargs)}}">下一页</a>
+			</li>
+		{% endif %}
+	</ul>
+{% endmacro %}

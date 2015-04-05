@@ -1,0 +1,93 @@
+{% macro nav_topics(host, word=None, topics=None) %}
+	{% if not topics %}
+		{% set topics = ['科技数码', '互联网', '明星娱乐', '体育资讯', '汽车资讯',
+			'财经热点', '教育新闻', '星座命理', '科学探索', '两性话题'] %}
+	{% endif %}
+
+	<li class="pull-right">
+		<a class="nav-topics-hot" href="{{ host }}/cates">
+			<i class="glyphicon glyphicon-th"></i>
+		</a>
+	</li>
+
+	{% if request.url == host + '/'%}
+		<li class="index"><a class="active" href="{{ host }}/">首页</a></li>
+	{% else %}
+		<li class="index"><a href="{{ host }}/">首页</a></li>
+	{% endif %}
+
+	{% for topic in topics %}
+		<li>
+			<a{% if word == topic %} class="active"{% endif %} href="{{ host }}/topics/{{ topic }}.html">{{ topic }}</a>
+		</li>
+	{% endfor %}
+{% endmacro %}
+
+{% macro render_front(article) %}
+	<div class="front-item">
+		<a href="{{ url_for('articles.article_view', date=article.id[:8], id=article.id[8:]) }}" target="_blank">
+			<div class="front-img" style="background-image:url('{{ article.icon }}');"></div>
+			<h3 class="front-title">{{ article.title }}</h3>
+		</a>
+	</div>
+{% endmacro %}
+
+{% macro render_keywords(keywords, title='今日热搜', class='') %}
+	{% if keywords %}
+	<div class="section section-default{% if class %} {{ class }}{% endif %} clearfix">
+		<div class="section-header"><span class="section-title">{{ title }}</span></div>
+		<div class="section-body tags">
+			<ul class="keywords clearfix">
+				{% for word in keywords %}
+				<li>
+					<a href="{{ url_for('topics.topic_view', word=word) }}">{{ word }}</a>
+				</li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+	{% endif %}
+{% endmacro %}
+
+{% macro render_tags(tags, title='热门话题', class='') %}
+	{% if tags %}
+	<div class="section section-default{% if class %} {{ class }}{% endif %} clearfix">
+		<div class="section-header"><span class="section-title">{{ title }}</span></div>
+		<div class="section-body tags">
+			{% for tag, icon in tags.iteritems() %}
+			<div class="col-lg-4 col-md-6 col-xs-4">
+				<div class="topic-item">
+					{% if icon.startswith('<script') %}
+						<div class="topic-img">
+							{{ icon | safe }}
+						</div>						
+						<h4 class="topic-tag">{{ tag }}</h4>
+					{% else %}
+					<a href="{{ url_for('topics.topic_view', word=tag) }}">
+						<div class="topic-img" style="background-image:url('{{ icon }}');"></div>
+						<h4 class="topic-tag">{{ tag }}</h4>
+					</a>
+					{% endif %}
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+	{% endif %}
+{% endmacro %}
+
+{% macro render_comments(comments) %}
+	{% if comments %}
+		{% for comment in comments %}
+		<li>
+			<img class="avatar avatar-normal" src="{{ comment.avatar }}">
+			<div class="comment-user">
+				<span class="name">{{ comment.nickname }}</span>
+				<span class="data">{{ comment.pubdate }}</span>
+				<span class="num pull-right">#{{ comment.num }}楼</span>
+			</div>
+			<p class="comment-content">{{ comment.content }}</p>
+		</li>
+		{% endfor %}
+	{% endif %}
+{% endmacro %}

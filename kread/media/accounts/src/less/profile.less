@@ -1,0 +1,133 @@
+//
+// Profile
+// --------------------------------------------------
+
+// sidebar
+
+.sidebar {
+	text-align: center;
+
+	.avatar-box {
+		padding: 20px;
+		height: 140px;
+	}
+
+	&.affix {
+		position: static;
+	}
+
+	@media (min-width: 992px) {
+		&.affix,
+		&.affix-bottom {
+			width: 137px;
+		}
+
+		&.affix {
+			position: fixed;
+			top: 51px;
+		}
+
+		&.affix-bottom {
+			position: absolute;
+		}
+	}
+
+	@media (min-width: 1200px) {
+		&.affix,
+		&.affix-bottom {
+			width: 170px;
+		}
+	}
+
+	& .active a {
+		background: #eee;
+	}
+}
+
+#avatar-form {
+}
+
+.avatar-img,
+.avatar-shadow,
+#avatar {
+	width: 100px;
+	height: 100px;
+	border-radius: 50px;
+	display: inline-block;
+}
+
+.avatar-shadow {
+	position: relative;
+	bottom: 200px;
+	padding: 40px 0;
+
+	& span {
+		background: #000;
+		opacity: 0.6;
+		display: none;
+		padding: 8px 15px;
+		border-radius: 16px;
+		font-size: 14px;
+	}
+}
+
+.shadow-box .avatar-shadow:hover {
+	background: rgba(0, 0, 0, 0.5);
+	color: #fff;
+	font-weight: bold;
+
+	& span {	
+		display: inline;
+		color: #fff;
+	}
+	cursor: pointer;
+}
+
+#login .avatar-shadow {
+	bottom: 100px;
+}
+
+.shadow-box {
+	height: 0;
+}
+
+#avatar {
+	position: relative;
+	bottom: 100px;
+	opacity: 0;
+	z-index: 999;
+
+	&:hover {
+		cursor: pointer;
+
+		& + .shadow-box .avatar-shadow	{
+			background: rgba(0, 0, 0, 0.5);
+			color: #fff;
+			font-weight: bold;
+
+			& span {	
+				display: inline;
+				color: #fff;
+			}
+		}
+	}
+}
+
+
+// section
+
+.section {
+	padding-top: 30px;
+}
+
+#change-section {
+	margin-bottom: 80px;
+}
+
+.btn-box {
+	padding: 0 0 0 8px;
+
+	@media (max-width: 720px) {
+		padding: 0px;
+	}
+}

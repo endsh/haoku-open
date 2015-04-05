@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block keywords %}热门话题,互联网,科技数码,科学探索,明星娱乐,军事观察,财经热点,体育资讯,教育新闻,潮流时尚,健康养生,亲子育儿,文化思享,吃喝玩乐,人文历史,星座命理,家居装饰,房产资讯,汽车资讯,佛儒道法,美食小吃,公益活动,两性话题,摄影爱好,旅游度假,商业职场,名人名企{% endblock %}
+{% block subtitle %}热门话题{% endblock %}
+{% block description %}热门话题,互联网,科技数码,科学探索,明星娱乐,军事观察,财经热点,体育资讯,教育新闻,潮流时尚,健康养生,亲子育儿,文化思享,吃喝玩乐,人文历史,星座命理,家居装饰,房产资讯,汽车资讯,佛儒道法,美食小吃,公益活动,两性话题,摄影爱好,旅游度假,商业职场,名人名企{% endblock %}
+
+{% block body_class %}cates{% endblock %}
+
+{% block content %}
+<div class="cates">
+	{% for cate in cates %}
+	<div class="col-lg-6">
+		<div class="catecory clearfix">
+			<h3>{{ cate.cate }}</h3>
+			{% for tag, icon in cate.tags.iteritems() %}
+			<div class="col-lg-3 col-md-2 col-xs-4">
+				<div class="topic-item">
+					<a href="{{ url_for('topics.topic_view', word=tag) }}" target="_blank">
+						<div class="topic-img" style="background-image:url('{{ icon }}');"></div>
+						<h4 class="topic-tag">{{ tag }}</h4>
+					</a>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+	{% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,10 @@
+{
+  "name": "accounts",
+  "title": "Accounts",
+  "description": "This is a HaoKu Web Project.",
+  "version": "1.0.0",
+  "homepage": "http://accounts.haoku.net/",
+  "author": {
+    "name": "HaoKu Inc."
+  }
+}

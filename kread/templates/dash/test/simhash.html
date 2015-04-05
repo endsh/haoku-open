@@ -1,0 +1,105 @@
+{% extends "layout.html" %}
+{% block sidebar_menu %}{{ sidebar_menu('distance') }}{% endblock %}
+{% block header_script %}
+<script type="text/javascript">
++ function ($) {
+	$(function () {
+		$("a[data-target=#submit-modal]").click(function(ev) {
+			ev.preventDefault();
+			var target = $(this).attr("href");
+
+			$("#submit-modal .modal-content").load(target, function() { 
+				$("#submit-modal").modal("show"); 
+			});
+		});
+		$("a#errors").click(function(ev) {
+			ev.preventDefault();
+			var target = $(this).attr("href");
+			$.ajax({
+				type: "get",
+				url: target,
+				success: function (result) {
+					if(result.code==1){
+						alert('发生错误 请联系管理员查看日志');
+					}else if (result.code == 0){
+						alert('记录成功');
+					}
+				}
+			});
+		});
+	});
+}(jQuery);
+</script>
+{% endblock %}
+{% block content %}
+<div id="submit-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog" style="width: 900px;">
+		<div class="modal-content">
+		</div>
+	</div>
+</div>
+<div class="row">
+	<form class='form-inline' role='form'>
+		<div class="form-group">
+			<h1>simhash</h1>
+		</div>
+	</form>
+</div>
+<hr/>
+<div class="row">
+	<div class="col-lg-12">
+		<table class="table table-striped table-hover table-fixed-header table-mongo">
+			<thead class="header">
+				<tr>
+					<th class="column-header">
+						title
+					</th>
+					<th class="column-header">
+						liek_title
+					</th>
+					<th class="column-header">
+						distance
+					</th>
+					<th class="column-header">
+						操作
+					</th>
+					
+				</tr>
+			</thead>
+			{% for row in res %}
+			<tr>
+				{% set uid = row.get('_id') %}
+				{% set title1 = arts.get(row.get('_id')) %}
+				{% set title2 = arts.get(row.get('ids').keys()[0]) %}
+				<td>{{ title1 }}</td>
+				<td>{{ title2 }}</td>
+				<td>{{ row.get('distance') }}</td>
+				<td style="width:100px;">
+					<a class="btn btn-info btn-xs" data-toggle="modal" data-target="#submit-modal" data-refresh="true" href="{{ url_for('test.distance', data=row, title1=title1, title2=title2) }}">查看</a>
+					<a class="btn btn-info btn-xs" data-toggle="modal" data-target="#submit-modal" data-refresh="true" id='errors' href="{{ url_for('test.tests', data=row) }}">遍历</a>
+				</td>
+			</tr>
+			{% endfor %}
+		</table>
+	</div>
+</div>
+<div class="row">
+	<div id="bottom-bar">
+		<div class="pull-right">
+			<a class="btn btn-info" data-toggle="modal" data-target="#submit-modal" data-refresh="true" href="/journal/recode/new/?url=%2Fjournal%2Frecode%2F" style="margin:20px 0">添加日志</a>
+		</div>
+
+		<div>
+			<nav>
+				<ul class="pager">
+					<li {% if p == 0 %} class="disabled" {% endif %}><a href="{{ url_for('test.simhash', p=p-1) }}"  >Previous</a></li>
+					<li><a href="{{ url_for('test.simhash', p=p+1) }}">Next Page</a></li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+
+	
+</div>
+	
+{% endblock %}

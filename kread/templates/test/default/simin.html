@@ -1,0 +1,123 @@
+{% extends "layout-fluid.html" %}
+
+{% block content %}
+<style>
+.k-drop-tree {
+	color: red;
+	background: yellow;
+	padding: 8px;
+}
+.input-group, .btn-group {
+	margin-bottom: 20px;
+}
+#history {
+	max-height: 470px;
+	overflow-y: auto;
+	margin-bottom: 0;
+}
+
+#show {
+	display: none;
+	width:100%;
+	height:580px;
+	overflow-y:auto;
+	border-radius: 4px;
+	background-color: #FFF;
+	border: 1px solid #DDD;
+	padding: 30px;
+}
+#result {
+	width:100%;
+	height:540px;
+}
+@media (max-width: 992px) {
+	#history {
+		max-height: 124px;
+		margin-bottom: 20px;
+	}
+	#show {
+		height:340px;
+	}
+	#result {
+		height:340px;
+	}
+}
+
+.title {
+	font-weight: normal;
+	font-size: 32px;
+	border-bottom: thin solid #ddd;
+	padding: 0px 0px 8px;
+	margin-top: 0px;
+	margin-bottom: 16px;
+}
+.title a {
+	color: #333;
+    text-decoration: none;
+}
+.article-content {
+	padding-bottom: 20px;
+	color:666;
+	font-size: 16px;
+}
+
+img {
+	max-width: 100%;
+}
+</style>
+<div class="row">
+	<div class="col-md-8">
+		<div class="input-group">
+			<span class="input-group-addon">
+				<input id="debug" type="checkbox" value="true">
+			</span>
+			<input id="url" class="form-control" type="text" placeholder="链接">
+			<span class="input-group-btn">
+				<button class="btn btn-default" type="button" onclick="$('#url').val('')"><i class="glyphicon glyphicon-remove"></i></button>
+			</span>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="btn-group btn-group-justified">
+			<div class="btn-group">
+				<button id="submit-common" type="submit" class="btn btn-primary" data-type="last">Common</button>
+			</div>
+			<div class="btn-group">
+				<button id="submit-show" type="submit" class="btn btn-primary" data-type="last">Show</button>
+				</span>
+			</div>
+			<div class="btn-group">
+				<button id="submit-all" type="submit" class="btn btn-primary" data-type="last">All</button>
+				</span>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-12">
+		<textarea id="result"></textarea>
+	</div>
+</div>
+<script>
+function load_url(url) {
+	$('#url').val(url);
+	$('#submit-common').click();
+}
+
+$('#submit-common').click(function () {
+	if ($.trim($('#url').val()).length == 0) {
+		return
+	}
+	$('#show').hide();
+	$('#result').show();
+	var url = '/simin/' + $('#url').val();
+	$.get(url, {}, function (data) {
+		$('#result').val(data);
+	});
+});
+$(document).keyup(function (e) {
+	var key =  e.which;
+	if (key == 13) {
+		$('#submit-common').click();
+	}
+});
+</script>
+{% endblock %}

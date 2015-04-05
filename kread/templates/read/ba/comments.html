@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block body %}
+	<ul class="comments-list">
+		{% for comment in comments %}
+		<li>
+			<img src="/static/img/profle.png">
+			<div class="comment-user">
+				<span class="name">{{ comment.uid }}</span>
+				<span class="data">{{ comment.pubdate }}</span>
+			</div>
+			<p>{{ comment.content }}</p>
+		</li>
+		{% endfor %}
+	</ul>
+{% endblock %}

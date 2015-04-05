@@ -1,0 +1,98 @@
+{% extends "layout.html" %}
+
+{% block sidebar_menu %}{{ sidebar_menu('log') }}{% endblock %}
+{% block header_script %}
+<script type="text/javascript">
++ function ($) {
+	$(function () {
+		var collapsed = $(".collapsed")
+		collapsed.on("click", function () {
+			href = this.href;
+			last = href.lastIndexOf('/');
+			href = href.substr(last+2);
+			$.ajax({
+				type: "get",
+				url: "{{url_for('log.userinfo')}}",
+				data: "user_id=" + this.rel + "&_id=" + href,
+				success: function (result) {
+					if (result.code == 0){
+						html = ""
+						if (result.recode == 0){
+							for(var index in result.recodes)
+						{
+								html += '<li class="timeline-inverted">'
+								html += '<div class="timeline-badge warning"><i class="fa fa-search"></i></div>'
+								html += '<div class="timeline-panel"><div class="timeline-heading"><h4 class="timeline-title">' + result.recodes[index].title + '</h4><p><small class="text-muted"><i class="fa fa-clock-o"></i>' + result.recodes[index].pubtime + '</small></p></div>'
+								html += '<div class="timeline-body"><p>'+ result.recodes[index].content + '</p></div>'
+								html += '</div></li>'
+							}
+							$("#decs").after(html);
+						}else{
+							html += '<li class="timeline-inverted">'
+								
+							
+							html += '<div class="timeline-badge warning"><i class="fa fa-credit-card"></i></div>'
+							html += '<div class="timeline-panel"><div class="timeline-heading"><h4 class="timeline-title">查询结果</h4></div>'
+							html += '<div class="timeline-body"><p>该成员没有提交记录, 是否提醒该用户提交日志? <a href="#">提醒</a> </p></div>'
+							html += '</div></li>'
+						}
+						$("#decs").after(html);
+					}else{
+						alert(result.msg)
+					}
+				}
+			});
+			
+		});
+	});
+}(jQuery);
+</script>
+{% endblock %}
+
+{% block content %}
+<div id="submit-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+		</div>
+	</div>
+</div>
+<div class="panel-body">
+	<div class="panel-group" id="accordion">
+		{% set num = 0 %}
+		{% for task in tasks %}
+		{% set num = num + 1 %}
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h4 class="panel-title" >
+					<a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#{{ task._id }}" rel="{{ task.user_id }}">{{ task.pubtime }} -> {{ task.title }}</a>
+				</h4>
+			</div>
+
+			<div style="height: 0px;" id="{{ task._id }}" class="panel-collapse collapse">
+				<div class="panel-body">
+					<div class="bs-glyphicons">
+						<ul class="timeline">
+							<li id="decs">
+								<div class="timeline-badge"><i class="fa fa-check"></i>
+								</div>
+								<div class="timeline-panel">
+									<div class="timeline-heading">
+										<h4 class="timeline-title">{{ task.title }}</h4>
+										<p><small class="text-muted"><i class="fa fa-clock-o"></i>{{ task.pubtime }}</small>
+										</p>
+									</div>
+									<div class="timeline-body">
+										<p>{{ task.content}}</p>
+									</div>
+								</div>
+							</li>							
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+</div>
+
+{% endblock %}

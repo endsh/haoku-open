@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}小酷实验室 - 正文提取{% endblock %}
+{% block keyword %}小酷,小酷实验室,正文提取,文章提取,HTML提取{% endblock %}
+{% block description %}小酷实验室隶属于广州小酷计算机科技有限公司旗下，目前主要提供HTML正文提取测试功能。{% endblock %}
+
+{% block body %}
+<div class="container">
+	<h1 class="text-center" style="margin: 40px auto;">小酷实验室 - 正文提取</h1>
+	<form action="{{ url_for('article.article') }}">
+		<div class="input-group">
+			<input class="form-control" name="url" placeholder="文章链接">
+	    	<span class="input-group-btn">
+				<button type="submit" class="btn btn-default">提取正文</button>
+			</span>
+		</div>
+	</form>
+	{% if articles %}
+	<div class="article-others">
+		<h4 class="page-header">最新文章</h4>
+		<div class="list-group">
+			{% for article in articles %}
+			<a class="list-group-item clearfix" href="{{ url_for('article.article', url=article._id) }}">{{ article.title }}<span class="pull-right">{{ article.pubtime }}</span></a>
+			{% endfor %}
+		</div>
+	</div>
+	{% endif %}
+	<a class="btn btn-default btn-block" style="margin:20px 0;" href="{{ url_for('article.article_list') }}">查看更多文章</a>
+	<div class="copyright" style="color:#888;text-align:center;font-size:14px;margin-bottom:20px;">Copyright 2014. 小酷实验室 - <a class="back" href="http://lab.haoku.net/">正文提取测试</a></div>
+</div>
+{% endblock %}

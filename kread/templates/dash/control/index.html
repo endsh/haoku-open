@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block sidebar_menu %}{{ sidebar_menu('control', 'control') }}{% endblock %}
+{% block content %}
+<div id="counts" class="row well" style="margin-top: 20px; padding: 4px;">
+</div>
+<div class="row">
+	<div class="col-md-9">
+		<div id="placeholder" style="height: 380px;">
+		</div>
+	</div>
+	<div class="col-md-3">
+		<div id="choices">
+		</div>
+	</div>
+	<script>var dataurl = "{{ url_for('control.data') }}";</script>
+</div>
+<style>
+#page-wrapper {
+	padding: 20px;
+	padding-top: 51px;
+}
+#choices label {
+	margin-bottom: 2px;
+}
+#counts .col-md-3 {
+	padding: 0 3px;
+}
+</style>
+{% endblock %}

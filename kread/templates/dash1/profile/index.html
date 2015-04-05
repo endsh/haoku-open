@@ -1,0 +1,74 @@
+{% extends "profile/base.html" %}
+
+{% block title %}基本资料{% endblock %}
+{% block index_profile_nav_class %}active{% endblock %}
+
+{% block header_script %}
+<link rel="stylesheet" type="text/css" href="/static/third/bootstrap-datepicker/css/datepicker3.css" />
+<script type="text/javascript" src="/static/third/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script type="text/javascript" src="/static/third/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js"></script>
+<style type="text/css">
+.form-horizontal .btn {
+    padding: 6px 20px;
+}
+
+.k-profile-nav {
+    border-right: 1px solid #DDD;
+    padding-right: 0px;
+    margin-top: 20px;
+}
+.k-profile-nav a.list-group-item {
+    border:none;
+    background: transparent;
+    padding-right: 0px;
+    padding-left: 20px;
+    border: 1px solid transparent;
+}
+
+.k-profile-nav a.list-group-item:hover,
+.k-profile-nav a.list-group-item.active {
+    border-radius: 4px 0px 0px 4px;
+    border: 1px solid #DDD;
+    color: #333;
+    background: #FFF;
+    padding-right: 0px;
+    padding-left: 20px;
+}
+
+.k-profile-nav a.list-group-item:hover {
+    background: #F9FAFB;
+}
+
+.k-profile-content {
+    min-height: 420px;
+}
+</style>
+{% endblock %}
+
+{% block profile_content %}
+<h3 class="page-header" style="font-weight:100;">基本资料</h3>
+<div class="col-md-9">
+    <div class="row">
+    	<div class="col-sm-4"></div>
+    	<div class="col-sm-4 k-message">{{ form | alert_first_error }}</div>
+    </div>
+    <form class="form-horizontal" action="{{ url_for('profile.index') }}" method="post">
+    	{{ form | kform }}
+    	<div class="col-sm-4"></div>
+    	<div class="col-sm-8"><button type="submit" class="btn btn-primary">保存</button></div>
+    </form>
+</div>
+{% endblock %}
+
+{% block footer_script %}
+<script type="text/javascript">
+$('#birthday').datepicker({
+    format: "yyyy-mm-dd",
+    startDate: "1900-01-01",
+    endDate: "2014-12-31",
+    startView: 2,
+    language: "zh-CN",
+    autoclose: true
+});
+</script>
+{% endblock %}

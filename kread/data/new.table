@@ -1,0 +1,68 @@
+domain
+	_id
+	name
+	arts
+	articles
+	down
+	null
+	error
+	status
+	last
+
+catecory
+	_id
+	domain
+	name
+	tag
+	page_tpl
+	arts
+	articles
+	down
+	null
+	error
+	status
+	next
+	last
+
+template
+	_id
+	domain
+	title_selector
+	source_selector
+	content_selector
+	arts
+	articles
+	status
+	last
+
+art
+	_id
+	domain
+	type
+	src
+	tpl
+	status
+	last
+
+article
+	_id
+	num_id
+	base_id
+	type
+	src
+	tpl
+	url
+	html
+	title
+	content
+	src_link
+	src_name
+	pubtime
+	tags
+	status
+	last
+
+topic
+	_id
+	name
+	

@@ -1,0 +1,6 @@
+{
+	"extends" : "../src/js/.jshintrc",
+	"asi" : false,
+	"es3" : false,
+	"node" : true
+}

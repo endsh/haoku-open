@@ -1,0 +1,104 @@
+{% extends "layout.html" %}
+
+{% block subtitle %}个人中心{% endblock %}
+{% block body_id %}profile{% endblock %}
+
+
+{% block content %}
+<div class="row">
+	<div class="col-md-2">
+		<div class="sidebar">
+			<div class="avatar-box">
+				<img class="avatar avatar-large" src="{{ profile.avatar }}">
+				<form id="avatar-form" action="{{ url_for('profile.avatar') }}" method="post">
+					{{ avatar_form | simple }}
+					<div class="shadow-box">
+						<a class="avatar-shadow"><span>上传头像</span></a>
+					</div>
+				</form>
+			</div>
+			<ul class="nav">
+				<li><a href="#profile-section">个人资料</a></li>
+				<li><a href="#bind-section">帐号绑定</a></li>
+				<li><a href="#change-section">修改密码</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="col-md-10">
+		<div id="profile-section" class="section clearfix">
+			<h3 class="page-header">个人资料</h3>
+			<div class="col-md-9">
+				<div class="col-sm-offset-4 profile-message"></div>
+				<form id="profile-form" class="form-horizontal" action="{{ url_for('profile.save') }}" method="post">
+					{{ profile_form | kform(4) }}
+					<div class="col-sm-offset-4 col-sm-8 btn-box">
+						<button type="submit" class="btn btn-info btn-block">保存</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div id="bind-section" class="section clearfix">
+			<h3 class="page-header">帐号绑定</h3>
+			<div class="col-md-9">
+				<div class="col-sm-offset-4 bind-message"></div>
+				<form class="form-horizontal" action="{{ url_for('profile.bind_email') }}" method="post">
+					<div class="form-group">
+						<label class="control-label col-sm-4" for="nick">邮箱</label>
+						<div class="col-sm-8">
+							<div class="input-group">
+								<input type="text" class="form-control" id="email" name="email" readonly="" value="{{ user.email }}">
+								<span class="input-group-btn">
+									{% if user.access_token == 'already_access' %}
+									<a id="btn-email" class="btn btn-default disabled">验证通过</a>
+									{% else %}
+									<a id="btn-email" class="btn btn-default" data-loading-text="正在发送邮件...">发送激活邮件</a>
+									{% endif %}
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-4" for="nick">手机号码</label>
+						<div class="col-sm-8">
+							<div class="input-group">
+								<input type="text" class="form-control" id="phone" name="phone" readonly="" value="开发中">
+								<span class="input-group-btn"><a class="btn btn-default disabled">发送绑定验证码</a></span>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-4" for="nick">微博</label>
+						<div class="col-sm-8">
+							<div class="input-group">
+								<input type="text" class="form-control" id="weibo" name="weibo" readonly="" value="开发中">
+								<span class="input-group-btn"><a class="btn btn-default disabled">绑定</a></span>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-4" for="nick">QQ</label>
+						<div class="col-sm-8">
+							<div class="input-group">
+								<input type="text" class="form-control" id="qq" name="qq" readonly="" value="开发中">
+								<span class="input-group-btn"><a class="btn btn-default disabled">绑定</a></span>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div id="change-section" class="section clearfix">
+			<h3 class="page-header">修改密码</h3>
+			<div class="col-md-9">
+				<div class="col-sm-offset-4 change-message"></div>
+				<form id="change-form" class="form-horizontal" action="{{ url_for('profile.change') }}" method="post">
+					{{ change_form | kform(4) }}
+					<div class="col-sm-offset-4 col-sm-8 btn-box">
+						<button type="submit" class="btn btn-info btn-block">保存</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

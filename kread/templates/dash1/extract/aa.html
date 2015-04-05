@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+
+{% block body %}
+<style>
+.article {
+	max-width: 840px;
+	font-size: 16px;
+	background: #fff;
+	padding: 20px 30px;
+	box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
+	font-family: "微软雅黑",Tahoma,Verdana,"宋体";
+}
+
+.article p {
+	margin: 0 0 18px;
+}
+
+.article-meta {
+	border-bottom: 1px dashed #D3D3D3;
+	padding: 10px 0;
+	margin-bottom: 20px;
+}
+
+.article-meta span {
+	margin-right: 16px;
+}
+
+.article-content img {
+	max-width: 100%;
+	height: auto;
+}
+
+.k-img {
+	margin: 10px 0;
+}
+
+.main {
+	max-width: 840px;
+	margin: 20px auto;
+	padding: 0px;
+}
+
+.btn-primary {
+    color: #51ADED;
+    background-color: transparent;
+    border: 2px solid #51ADED;
+}
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+    color: #FFF;
+    background-color: #51ADED;
+    border: 2px solid #51ADED;
+}
+</style>
+<div class="container main">
+{% if article %}
+	<div style="margin-bottom: 20px;">
+		<form method="get" role="form">
+			<input type="hidden" name="url" id="url" value="{{ url }}">
+			<input type="hidden" name="tpl" id="tpl" value="{{ tpl }}">
+			<div class="input-group">
+				<span class="input-group-addon">
+				{% if data %}
+					<span class="badge" style="background-color:rgb(91, 192, 222)">存在</span>
+				{% else %}
+					<span class="badge" style="background-color:rgb(192, 135, 222)">不存在</span>
+				{% endif %}
+				</span>
+				<span class="input-group-addon" id="num">0</span>
+				<span class="input-group-addon">标题选择器</span>
+				<input id="title_selector" class="form-control" type="text" name="title_selector" value="{{ article.title_selector }}">
+				<span class="input-group-btn">
+					<button class="btn btn-default" type="button" onclick="$('#title_selector').val('')"><i class="glyphicon glyphicon-remove"></i></button>
+				</span>
+			</div>
+			<div class="input-group">
+				<span class="input-group-addon">正文选择器</span>
+				<input id="content_selector" class="form-control" type="text" name="content_selector" value="{{ article.content_selector }}">
+				<span class="input-group-btn">
+					<button class="btn btn-default" type="button" onclick="$('#content_selector').val('')"><i class="glyphicon glyphicon-remove"></i></button>
+				</span>
+			</div>
+			<div class="input-group">
+				<span class="input-group-addon">来源选择器</span>
+				<input id="source_selector" class="form-control" type="text" name="source_selector" value="{{ article.source_selector }}">
+				<span class="input-group-btn">
+					<button class="btn btn-default" type="button" onclick="$('#source_selector').val('')">选择</button>
+				</span>
+			</div>
+			<div class="btn-group btn-group-justified">
+				<div class="btn-group">
+					<button id="submit-deal" type="submit" class="btn btn-primary" data-type="last">提取</button>
+				</div>
+				<div class="btn-group">
+					<button id="submit-save" type="submit" class="btn btn-primary" data-type="last">保存</button>
+				</div>
+				<div class="btn-group">
+					<button id="submit-del" type="submit" class="btn btn-primary" data-type="last">删除</button>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="article clearfix">
+		<h1 class="article-title">{{ article.title }}</h1>
+		<div class="article-meta">
+			<span style="color:#08C">{{ article.src_name }}</span>
+			<span>{{ article.pubtime }}</span>
+			<span class="pull-right" style="color:#08C"><a href="{{ url }}" target="_blank">查看原文</a></span>
+		</div>
+		<div class="article-content">{{ article.content | safe }}</div>
+	</div>
+
+<script>
+$('#submit-save').click(function () {
+	if ($.trim($('#tpl').val()).length == 0) {
+		return false;
+	}
+
+	var data = {
+		tpl: $.trim($('#tpl').val()),
+		title_selector: $.trim($('#title_selector').val()),
+		source_selector: $.trim($('#source_selector').val()),
+		content_selector: $.trim($('#content_selector').val())
+	};
+	$.get('/extract/save/tpl', data, function (data) {
+		if (data == 'true') {
+			$('#num').html(parseInt($('#num').html())+1)
+		}
+	});
+	return false;
+});
+
+$('#submit-del').click(function () {
+	if ($.trim($('#tpl').val()).length == 0) {
+		return false;
+	}
+
+	var data = {
+		tpl: $.trim($('#tpl').val())
+	};
+	$.get('/extract/del/tpl', data, function (data) {
+		if (data == 'true') {
+			$('#num').html(parseInt($('#num').html())+1)
+		}
+	});
+	return false;
+});
+</script>
+{% endif %}
+	<div class="article">
+		<div class="list-group">
+			{% for url in urls %}
+			<a class="list-group-item" href="{{ url_for('extract.aa', url=url, title_selector=title_selector, source_selecotr=source_selector, content_selector=content_selecotr) }}">{{ url }}</a>
+			{% endfor %}
+		</div>
+
+		<h3 class="page-header">查看原文</h3>
+		<div class="list-group">
+			{% for url in urls %}
+			<a class="list-group-item" href="{{ url }}" target="_blank">{{ url }}</a>
+			{% endfor %}
+		</div>
+	</div>
+</div>
+{% endblock %}

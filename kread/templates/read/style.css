@@ -1,0 +1,184 @@
+<style>
+.front-item {
+	position: relative;
+}
+
+.front-img {
+	width: 100%;
+	height: 120px;
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center center;
+}
+
+.front-big .front-img,
+.side-two .front-img {
+	height: 248px;
+}
+
+.front-title {
+	position: absolute;
+	width: 100%;
+	height: 30px;
+	font-size: 14px;
+	font-weight: bold;
+	line-height: 30px;
+	left: 0px;
+	bottom: 0px;
+	color: #FFF;
+	background-color: rgba(0, 0, 0, 0.5);
+	padding-left: 8px;
+	margin: 0px;
+	z-index: 10;
+}
+
+.front-big .front-title {
+	height: 36px;
+	font-size: 18px;
+	line-height: 36px;
+}
+
+.front h3 {
+	overflow: hidden;
+}
+
+.front-main,
+.front-side {
+	padding: 4px;
+}
+
+.col-md-6,
+.col-md-3,
+.side-one,
+.side-two {
+	padding: 4px;
+}
+
+.front-right,
+.front-bottom {
+	padding: 0px;
+}
+
+.front-side,
+.side-one,
+.side-two {
+	padding-left: 0px;
+}
+
+@media screen and (max-width: 1199px) {
+	.front-side {
+		display: none;
+	}
+}
+
+</style>
+
+<style>
+.cate {
+	margin-top: 20px;
+}
+
+.cate-meta {
+	padding-bottom: 8px;
+	font-size: 20px;
+}
+
+.cate-meta span {
+	padding-bottom: 8px;
+}
+
+.cate-meta-1 {
+	color: #3af;
+	border-bottom: 1px solid #3af;
+}
+
+.cate-meta-1 span {
+	border-bottom: 3px solid #3af;
+}
+
+.cate-meta-2 {
+	color: #fa3;
+	border-bottom: 1px solid #fa3;
+}
+
+.cate-meta-2 span {
+	border-bottom: 3px solid #fa3;
+}
+
+.cate-meta-3 {
+	color: #f3a;
+	border-bottom: 1px solid #f3a;
+}
+
+.cate-meta-3 span {
+	border-bottom: 3px solid #f3a;
+}
+
+.cate-meta-4 {
+	color: #ae3;
+	border-bottom: 1px solid #ae3;
+}
+
+.cate-meta-4 span {
+	border-bottom: 3px solid #ae3;
+}
+
+.cate-meta-5 {
+	color: #a3f;
+	border-bottom: 1px solid #a3f;
+}
+
+.cate-meta-5 span {
+	border-bottom: 3px solid #a3f;
+}
+
+.cate-meta-6 {
+	color: #3d9;
+	border-bottom: 1px solid #3d9;
+}
+
+.cate-meta-6 span {
+	border-bottom: 3px solid #3d9;
+}
+
+.cate-meta-7 {
+	color: #dd0;
+	border-bottom: 1px solid #dd0;
+}
+
+.cate-meta-7 span {
+	border-bottom: 3px solid #dd0;
+}
+
+.cate-meta-8 {
+	color: #0dd;
+	border-bottom: 1px solid #0dd;
+}
+
+.cate-meta-8 span {
+	border-bottom: 3px solid #0dd;
+}
+
+.cate-meta-9 {
+	color: #3c0;
+	border-bottom: 1px solid #3c0;
+}
+
+.cate-meta-9 span {
+	border-bottom: 3px solid #3c0;
+}
+
+.cate-meta-10 {
+	color: #03c;
+	border-bottom: 1px solid #03c;
+}
+
+.cate-meta-10 span {
+	border-bottom: 3px solid #03c;
+}
+
+.cates .col-md-9 {
+	padding: 8px;
+}
+
+</style>

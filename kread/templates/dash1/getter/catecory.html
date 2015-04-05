@@ -1,0 +1,113 @@
+{% extends "layout.html" %}
+
+{% block sidebar %}
+	{{ sidebar('getter', 'domain') }}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="col-lg-12">
+		<h1 class="page-header">来源 - 网站</h1>
+	</div>
+</div>
+<!-- /.row -->
+
+<div class="row">
+	<div class="col-lg-12">
+		<table class="table table-striped table-hover table-fixed-header">
+			<thead class="header">
+				<tr>
+					<th>#</th>
+					<th>域名</th>
+					<th>网站名</th>
+					<th>分类数</th>
+					<th>模板数</th>
+					<th>反向链接</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for index, domain in enumerate(pagination.items) %}
+				<tr>
+					<td>{{ index + pagination.prev_num * pagination.per_page + 1 }}</td>
+					<td>{{ domain.id }}</td>
+					<td>{{ domain.name }}</td>
+					<td>{{ domain.cates }}</td>
+					<td>{{ domain.tpls }}</td>
+					<td>{{ domain.links }}</td>
+					<td>
+						<a class="btn btn-info btn-xs" data-toggle="modal" data-target="#submit-modal" data-refresh="true" href="{{ url_for('getter.edit_domain', id=domain.id) }}">编辑</a>
+						{% if domain.status == 'valid' %}
+							<a class="btn btn-warning btn-xs" href="{{ url_for('getter.domain_status', id=domain.id, status='invalid', next=request.url) }}">废弃</a>
+						{% else %}
+							<a class="btn btn-success btn-xs" href="{{ url_for('getter.domain_status', id=domain.id, status='valid', next=request.url) }}">激活</a>
+						{% endif %}
+
+						<a class="btn btn-danger btn-xs" href="{{ url_for('getter.delete_domain', id=domain.id, next=request.url) }}">删除</a>
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
+<div class="row">
+	{% from "snippet/macro.html" import render_paginate %} 
+	<div id="bottom-bar">
+		<div class="pull-left">
+			<a class="btn btn-info" data-toggle="modal" data-target="#submit-modal" data-refresh="true" href="{{ url_for('getter.edit_domain') }}" style="margin:20px 0">添加新网站</a>
+		</div>
+		<ul class="pagination pull-right">
+			{{ render_paginate(pagination, endpoint) }}
+		</ul>
+	</div>
+	<div id="submit-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block footer %}
+<script>
+$('.table-fixed-header').fixedHeader({bgColor: '#fff'});
+
+$('#bottom-bar').affix({
+  offset: {
+    top: -1,
+  }
+});
+
+$('#bottom-bar').css({width:($('.table').width() + 60)});
+
+window.onresize = function () {
+	$('.table-fixed-header').fixedHeader({bgColor: '#fff'});
+	$('#bottom-bar').css({width:($('.table').width() + 60)});
+}
+</script>
+<style>
+#bottom-bar.affix {
+	margin: 0 -15px;
+	padding: 0 30px;
+	bottom: 0;
+	background: #fff;
+	border-top: 2px solid #ddd;
+}
+table .header-fixed {
+	position: fixed;
+	top: 50px;
+	z-index: 1020;
+	background: #fff;
+}
+
+.table {
+	margin-bottom: 94px;
+}
+
+.form-horizontal .form-group:last-child {
+	margin-bottom:0;
+}
+</style>
+{% endblock %}

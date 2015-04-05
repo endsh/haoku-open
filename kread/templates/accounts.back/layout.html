@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-CN" lang="zh-CN">
+<head>
+<meta property="qc:admins" content="106251702375643645346017356654" />
+<title>{% block title_all %}{% block title %}{% endblock %} - 好酷网{% endblock %}</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF8" /> 
+<meta http-equiv="Content-Language" content="zh-CN" />
+<meta name="keywords" content="{% block keywords %}haoku,好酷,好酷网,好酷阅读,移动阅读,移动搜索{% endblock %}" />
+<meta name="description" content="{% block description %}{% endblock %}" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+{% block static_header %}{{ static_header() }}{% endblock %}
+{% block static_ie8 %}{{ static_ie8() }}{% endblock %}
+{% block header_script %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+<!-- header -->
+<header class="k-header">
+{% block header %}
+    <nav class="navbar navbar-default navbar-fixed-top k-navbar" role="navigation">
+        <div class="container">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#like-navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span> 
+            </button>
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">好酷</a>
+            </div>
+        </div><!-- /.container -->
+    </nav>
+{% endblock %}
+</header><!-- end header -->
+<!-- content -->
+<div class="k-content {% block content_class %}container{% endblock %}">
+{% block content %}{% endblock %}
+</div><!-- end content -->
+<!-- footer -->
+<footer class="k-footer">
+{% block footer %}
+<hr/>
+    <div id="k-copyright">
+        <div>
+            <a href="/about" target="_blank">关于我们</a> | 
+            <a href="#" target="_blank">移动应用</a> | 
+            <a href="#" target="_blank">广告服务</a> | 
+            <a href="/about#join" target="_blank">加入我们</a> | 
+            <a href="/about#links" target="_blank">友情链接</a> | 
+            <a href="#" target="_blank">意见反馈</a> | 
+            <a href="#" target="_blank">网站导航</a>
+        </div>
+        <div class="en">Copyright (C) 2014 haoku. All Rights Reserved.</div>
+        <div>
+            <a href="#" target="_blank" rel="nofollow">好酷科技</a> <a href="#" target="_blank" rel="nofollow">版权所有</a>
+        </div>
+    </div>
+{% endblock %}
+</footer>
+<div class="cnzz" style="display:none;">
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1000515222'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s11.cnzz.com/z_stat.php%3Fid%3D1000515222%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));</script>
+</div>
+{% block footer_script %}{% endblock %}
+</body>
+</html>

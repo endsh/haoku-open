@@ -1,0 +1,21 @@
+mkdir /data2/soft
+cd /data2/soft/
+scp root@haoku.net:/data2/soft/mongodb-linux-x86_64-2.6.5.tgz .
+tar -zxvf mongodb-linux-x86_64-2.6.5.tgz
+mv mongodb-linux-x86_64-2.6.5 mongodb
+cd mongodb/
+scp -r root@haocool.net:/data2/soft/mongodb/etc .
+export LC_ALL=en_US.UTF8
+
+
+rs.initiate({_id:'hkset0',members:[{_id:0,host:'coolnote.cn:30001'},{_id:1,host:'haocool.net:30001'}]})
+rs.initiate({_id:'hkset1',members:[{_id:0,host:'haocool.net:30002'},{_id:1,host:'coolnote.cn:30002'}]})
+rs.initiate({_id:'hkset2',members:[{_id:0,host:'chiki.org:30001'},{_id:1,host:'formatter.org:30001'}]})
+rs.initiate({_id:'hkset3',members:[{_id:0,host:'formatter.org:30002'},{_id:1,host:'51ku.net:30001'}]})
+rs.initiate({_id:'hkset4',members:[{_id:0,host:'51ku.net:30002'},{_id:1,host:'chiki.org:30002'}]})
+
+sh.addShard("hkset0/coolnote.cn:30001,haocool.net:30001")
+sh.addShard("hkset1/haocool.net:30002,coolnote.cn:30002")
+sh.addShard('hkset2/chiki.org:30001,formatter.org:30001')
+sh.addShard('hkset3/formatter.org:30002,51ku.net:30001')
+sh.addShard('hkset4/51ku.net:30002,chiki.org:30002')

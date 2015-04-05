@@ -1,0 +1,35 @@
+. .bashrc
+
+export HAOKU_READ=release
+export PYTHONPATH=$PYTHONPATH:~/checkouts/haoku.net/read:~/checkouts/simin
+export EDITOR=vim
+
+. bin/activate
+
+cd ~/checkouts/haoku.net
+
+alias chk='cd ~/checkouts/haoku.net'
+
+alias later-start='~/bin/uwsgi ~/etc/later.xml'
+alias later-reload='~/bin/uwsgi --reload ~/run/later.pid'
+alias later-stop='~/bin/uwsgi --stop ~/run/later.pid'
+
+alias dash-start='~/bin/uwsgi ~/etc/dash.xml'
+alias dash-reload='~/bin/uwsgi --reload ~/run/dash.pid'
+alias dash-stop='~/bin/uwsgi --stop ~/run/dash.pid'
+
+alias web-start='~/bin/uwsgi ~/etc/web.xml'
+alias web-reload='~/bin/uwsgi --reload ~/run/web.pid'
+alias web-stop='~/bin/uwsgi --stop ~/run/web.pid'
+
+alias api-v1-start='~/bin/uwsgi ~/etc/api.v1.xml'
+alias api-v1-reload='~/bin/uwsgi --reload ~/run/api.v1.pid'
+alias api-v1-stop='~/bin/uwsgi --stop ~/run/api.v1.pid'
+
+alias accounts-start='~/bin/uwsgi ~/etc/accounts.xml'
+alias accounts-reload='~/bin/uwsgi --reload ~/run/accounts.pid'
+alias accounts-stop='~/bin/uwsgi --stop ~/run/accounts.pid'
+
+alias accounts-api-v1-start='~/bin/uwsgi ~/etc/accounts.api.v1.xml'
+alias accounts-api-v1-reload='~/bin/uwsgi --reload ~/run/accounts.api.v1.pid'
+alias accounts-api-v1-stop='~/bin/uwsgi --stop ~/run/accounts.api.v1.pid'

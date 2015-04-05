@@ -1,0 +1,12 @@
+{% extends 'simin_user/base.html' %}
+
+{% block content %}
+{{ current_user.active }}
+<br />
+
+{{ current_user.email }}
+<br />
+{{ current_user.access_token }}
+<br />
+
+{% endblock %}

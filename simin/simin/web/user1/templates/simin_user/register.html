@@ -1,0 +1,23 @@
+{% extends 'simin_user/base.html' %}
+
+{% block content %}
+<div class="row">
+	<div class="row">
+		<div class="col-md-offset-4 col-md-4">
+			<div id="profile-section" class="section clearfix">
+				<h3 class="page-header">Register</h3>
+				<div class="k-message">{{ form | alert_first_error }}</div>
+				<div>
+					<form id="profile-form" class="form-horizontal" action="{{ url_for('user.register') }}" method="post">
+						{{ form | kform_inline }}
+						
+						<div class="btn-box">
+							<button type="submit" class="btn btn-info btn-block">保存</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

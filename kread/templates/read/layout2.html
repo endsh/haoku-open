@@ -1,0 +1,210 @@
+{% extends "base.html" %}
+
+{% block body %}
+<header class="header">
+	{% block header -%}
+	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+		<div class="container">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<div class="navbar-header">
+				<a class="navbar-brand" href="/">K</a>
+			</div>
+			<div id="navbar-collapse" class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="">发现</a></li>
+                    <li>
+                        <form class="navbar-form" action="{{ WEB_SEARCH_URL }}" role="search" >
+                            <div class="input-group" >
+                                <input class="form-control search-input" type="text" value="" placeholder="话题/关键字" name="word">
+                            </div>
+                        </form>
+                    </li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="#">APP下载</a></li>
+					<li><a href="#">媒体平台</a></li>
+					{% if current_user.login %}
+					<li class="dropdown">
+						<a class="dropdown-toggle" data-toggle="dropdown" href="#">
+							<i class="glyphicon glyphicon-user"></i> {{ current_user.username }} <i class="glyphicon glyphicon-chevron-down"></i>
+						</a>
+						<ul class="dropdown-menu dropdown-user">
+							<li><a href="#"><i class="fa fa-user fa-fw"></i> 个人中心</a></li>
+							<li><a href="#"><i class="fa fa-gear fa-fw"></i> 设置</a></li>
+							<li class="divider"></li>
+							<li><a href=""><i class="fa fa-sign-out fa-fw"></i> 退出</a></li>
+						</ul>
+					</li>
+					{% else %}
+					<li><a class="btn btn-info btn-outline btn-login" href="#">登录</a></li>
+					{% endif %}
+				</ul>
+			</div><!-- /.navbar-collapse -->
+			<style>
+			.main {
+				margin-top: 53px;
+			}
+			.navbar {
+				margin-bottom: 0px;
+			}
+			.nav-topics {
+				margin-bottom: 6px;
+				border-bottom: 3px solid #e6e6e6;
+				background: #fff;
+			}
+			.nav-topic-item {
+				float: left;
+				list-style: none;
+				position: relative;
+				top: 3px;
+			}
+			.nav > li.nav-topic-item > a {
+				padding: 8px 15px;
+				border-bottom: 3px solid transparent;
+			}
+			.nav-topic-item:first-child a {
+				padding: 8px 20px;
+			}
+
+			.nav > li.nav-topic-item > a:hover {
+				background: transparent;
+				color: #3399e0;
+				border-bottom: 3px solid #3399e0;
+			}
+			</style>
+		</div><!-- /.container -->
+	</nav>
+    <script>
+        $(".search-input").focus(function(){
+            $(".search-input").animate({width:'250px'}, 200);
+        });
+        $(".search-input").blur(function(){
+            $(".search-input").animate({width:'210px'}, 200);
+        });
+		window.onscroll = function(){
+        	var t = document.documentElement.scrollTop || document.body.scrollTop; 
+			if (t > 10) {
+				$(".navbar-fixed-top").addClass('fixed');
+				$(".navbar-fixed-top .btn-login").addClass('active');
+			} else {
+				$(".navbar-fixed-top").removeClass('fixed');
+				$(".navbar-fixed-top .btn-login").removeClass('active');
+			}
+		} 
+    </script>
+	{%- endblock %}
+</header><!-- /.header -->
+{% block main %}
+<div class="main">
+	<div class="container" style="min-height: 600px;">
+		<div class="row" style="padding:0 8px;">
+			<ul class="nav nav-topics">
+				<li class="nav-topic-item"><a href="">首页</a></li>
+				<li class="nav-topic-item"><a href="">科技数码</a></li>
+				<li class="nav-topic-item"><a href="">互联网</a></li>
+				<li class="nav-topic-item"><a href="">明星娱乐</a></li>
+				<li class="nav-topic-item"><a href="">体育资讯</a></li>
+				<li class="nav-topic-item"><a href="">汽车资讯</a></li>
+				<li class="nav-topic-item"><a href="">财经热点</a></li>
+				<li class="nav-topic-item"><a href="">教育新闻</a></li>
+				<li class="nav-topic-item"><a href="">星座命理</a></li>
+				<li class="nav-topic-item"><a href="">科学探索</a></li>
+				<li class="nav-topic-item pull-right">
+					<a href="{{ url_for('topics.hot') }}" style="font-size:20px;line-height:22px;padding:8px 20px">
+						<i class="glyphicon glyphicon-th"></i>
+					</a>
+				</li>
+			</ul>
+		</div>
+		{% block content %}{% endblock %}
+	</div>
+</div><!-- /.main -->
+{% endblock %}
+<footer class="footer">
+	{% block footer -%}
+	<div class="container">
+		<div class="row">
+			<div class="col-md-5">
+				<div class="col-md-6 about">
+					<h3>好酷网</h3>
+					<ul>
+						<li><a href="{{ WEB_ABOUT_US }}">关于我们</a></li>
+						<li><a href="{{ WEB_ABOUT_JOIN }}">加入我们</a></li>
+						<li><a href="{{ WEB_ABOUT_MEDIA }}">媒体报道</a></li>
+						<li><a href="{{ WEB_ABOUT_LINK }}">合作伙伴</a></li>
+						<li><a href="{{ WEB_ABOUT_CONCAT }}">联系我们</a></li>
+						<li><a href="{{ WEB_ABOUT_UPDATE }}">更新日志</a></li>
+					</ul>
+				</div>
+				<div class="col-md-6">
+					<h3>友情链接</h3>
+					<ul>						
+						<li><a href="http://www.ycpai.com/">缘创派</a></li>
+						<li><a href="http://www.aliyun.com/">阿里云</a></li>
+						<li><a href="http://www.oslinux.cn/">科技阅读</a></li>
+						<li><a href="http://www.kugou.com/">酷狗音乐</a></li>
+						<li><a href="http://www.youku.com/">优酷传媒</a></li>
+						<li><a href="http://bce.baidu.com/">百度开放云</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="col-md-3">
+				<h3>联系我们</h3>
+				<ul>
+					<li>交流群1: 123456(满)</li>
+					<li>交流群2: 123456</li>
+					<li>交流群3: 123456</li>
+					<li>交流群4: 123456</li>
+					<li>媒体客户：mp@haoku.net</li>
+					<li>商务合作：bd@haoku.net</li>
+				</ul>
+			</div>
+			<div class="col-md-4 footer-copyright">
+				<p>本站由 <a href="http://www.aliyun.com/">阿里云</a> 提供 ECS, CDN, OSS 等服务。</p>
+				<p>Power by <a href="#">Flask</a>.</p>
+				<p>© 2014 小酷科技</p>
+				<p>粤ICP备13031007号</p>
+			</div>
+			<div class="line">© 2014 <a href="http://www.haoku.net/">小酷科技</a> 版权所有</div>
+		</div>
+	</div>
+	{%- endblock %}
+</footer><!-- /.footer -->
+<div class="scroll-btn">
+	<ul class="clearfix">
+		<li class="home">
+			<a href="#" title="返回首页" role="button">
+				<b>返回首页</b>
+			</a>
+		</li>
+		<li class="goTop" style="display: none">
+			<a id="backTop" href="" title="返回顶部" role="button">
+				<b>返回顶部</b>
+			</a>
+		</li>
+	</ul>
+</div>
+<script>
+$(function(){
+	$(window).scroll(function(){
+		if( $(window).scrollTop() > 500 ) {
+			$('.goTop').addClass('show');
+		} else {
+			$('.goTop').removeClass('show');
+		}
+	});
+
+	$('#backTop').click(function() {
+		$('body,html').animate({scrollTop:0},1000);
+		return false;
+	});
+});
+</script>
+{% endblock %}
+
+

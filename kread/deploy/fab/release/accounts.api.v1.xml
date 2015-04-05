@@ -1,0 +1,11 @@
+<uwsgi>
+	<chdir>/home/kread/checkouts/haoku.net/read</chdir>
+	<socket>/home/kread/run/accounts.api.v1.sock</socket>
+	<master>true</master>
+	<pidfile>/home/kread/run/accounts.api.v1.pid</pidfile>
+	<processes>4</processes>
+	<module>accounts.api.v1:app</module>
+	<max-requests>1000</max-requests>
+	<daemonize>/home/kread/log/accounts.api.v1.log</daemonize>
+	<buffer-size>32768</buffer-size>
+</uwsgi>

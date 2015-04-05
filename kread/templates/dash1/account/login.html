@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block title %}登录{% endblock %}
+{% block body_id %}body-login{% endblock %}
+
+{% block content %}
+<div class="btn btn-default k-logo">K</div>
+<div class="k-box k-input-box k-login-box clearfix">
+	<h3 class="page-header">好酷 - 登录</h3>
+	<div class="k-message">{{ form | alert_first_error }}</div>
+	<form id="login-form" action="{{ url_for('account.login') }}" method="post">
+		{{ form | kform_inline }}
+		<button type="submit" class="btn btn-primary btn-lg btn-block">马上登录</button>
+	</form>
+	<div class="pull-left">
+		<a href="{{ url_for('account.find') }}">忘记密码？</a>
+	</div>
+	<div class="pull-right">
+		<a href="{{ url_for('account.register') }}">马上注册</a>
+	</div>
+</div>
+{% endblock %}

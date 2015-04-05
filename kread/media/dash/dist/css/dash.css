@@ -1,0 +1,53 @@
+/*
+ * dash - v1.0.0 - 2014-12-16
+ * home: http://dash.haoku.net/
+ * Copyright (c) 2014 HaoKu Inc. All Rights Reserved.
+ */
+@media screen and (max-width: 768px) {
+  #page-wrapper {
+    margin-top: 30px;
+  }
+}
+.header {
+  margin: 80px 0px 30px;
+}
+.login-link {
+  margin: 30px 0px 80px;
+  color: #DDD;
+}
+.login-link a {
+  margin: 0px 10px;
+  color: #999;
+}
+.form-block input[type="text"] + input[type="text"],
+.form-block input[type="text"] + input[type="password"] {
+  margin-top: 10px;
+}
+#page-wrapper {
+  padding-top: 51px;
+}
+.table-mongo {
+  margin-bottom: 94px;
+}
+table .header-fixed {
+  position: fixed;
+  top: 50px;
+  z-index: 1020;
+  background: #fff;
+}
+#bottom-bar.affix {
+  margin: 0 -15px;
+  padding: 0 30px;
+  bottom: 0;
+  background: #fff;
+  border-top: 2px solid #ddd;
+}
+.form-inline {
+  display: inline;
+}
+.modal-body .form-group {
+  margin-bottom: 0;
+}
+.modal-body .form-group + .form-group {
+  margin-top: 15px;
+}

@@ -1,0 +1,11 @@
+<uwsgi>
+	<chdir>/home/kread/checkouts/haoku.net/read</chdir>
+	<socket>/home/kread/run/later.sock</socket>
+	<master>true</master>
+	<pidfile>/home/kread/run/later.pid</pidfile>
+	<processes>6</processes>
+	<module>later_wsgi:app</module>
+	<max-requests>10000</max-requests>
+	<daemonize>/home/kread/log/later.log</daemonize>
+	<buffer-size>32768</buffer-size>
+</uwsgi>

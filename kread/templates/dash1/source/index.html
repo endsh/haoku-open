@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block content %}
+	<div class="row">
+		<div>
+			<a class="btn btn-info btn-lg" data-toggle="modal" data-target="#submit-modal" data-refresh="true" href="{{ url_for('source.domain_add') }}" role="button">添加</a>
+			<div id="submit-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+				</div>
+			</div>
+		</div>
+		</div>
+		<table class="table table-hover">
+			<tr>
+				<th># {{ domains.count() }}</th>
+				<th>name</th>
+			</tr>
+			{% for domain in domains %}
+				<tr>
+					<td>{{ domain._id }}</td>
+					<td>{{ domain.name }}</td>
+				</tr>
+			{% endfor %}
+		</table>
+		{{ pagination.links | safe }}
+	</div>
+{% endblock %}

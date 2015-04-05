@@ -1,0 +1,71 @@
+{% macro sidebar(first, second) %}	
+	{% set nav_items = [
+		('/', 			'dashboard',	'fa-dashboard', 	'仪表盘',	[]),
+		('/',			'',				'fa-bar-chart-o',	'实时监控',	[]),
+		('/getter',		'getter',		'fa-globe',			'来源管理',	[
+			('/getter/domain',		'domain',	'网站'),
+			('/getter/catecory',	'catecory',	'分类'),
+			('/getter/template',	'template',	'模板'),
+			('/getter/link',		'link',		'链接'),
+		]),
+		('/article',	'article',		'fa-paper-plane-o',	'文章管理',	[
+			('/article/domain',		'domain',	'网站'),
+			('/article/catecory',	'catecory',	'分类'),
+			('/article/template',	'template',	'模板'),
+			('/article/article',	'article',	'文章'),
+			('/article/topic',		'topic',	'话题'),
+		]),
+	] %}
+	<div class="sidebar-nav navbar-collapse">
+		<ul class="nav" id="side-menu">
+			<li class="sidebar-search">
+				<div class="input-group custom-search-form">
+					<input type="text" class="form-control" placeholder="搜索...">
+					<span class="input-group-btn">
+						<button class="btn btn-default" type="button">
+							<i class="fa fa-search"></i>
+						</button>
+					</span>
+				</div>
+				<!-- /.input-group -->
+			<li>
+			{% for href, id, icon, caption, subs in nav_items %}
+				<li{% if id == first and subs%} class="active"{% endif %}>
+					<a{% if id == first and not subs%} class="active"{% endif %} href="{{ href }}"><i class="fa {{ icon }}"></i> {{ caption }}{% if subs %}<span class="fa arrow"></span>{% endif %}</a>
+					{% if subs %}
+						<ul class="nav nav-second-level">
+						{% for href, id, caption in subs %}
+							<li><a{% if id == second %} class="active"{% endif %} href="{{ href }}">{{ caption }}</a></li>
+						{% endfor %}
+						</ul>
+					{% endif %}
+				</li>
+			{% endfor %}
+		</ul>
+		<!-- /.nav -->
+	</div>
+	<!-- /.sidebar-collapse -->
+{% endmacro %}
+
+
+{% macro render_paginate(pagination, endpoint) %}
+	{% if pagination.prev_num > 0 %}
+		<li><a href="{{ url_for(endpoint, page=pagination.prev_num) }}">上一页</a></li>
+	{% else %}
+		<li class="disabled"><a>上一页</a></li>
+	{% endif %}
+	{%- for page in pagination.iter_pages() %}
+		{% if page %}
+			{% if page != pagination.page %}
+				<li><a href="{{ url_for(endpoint, page=page) }}">{{ page }}</a></li>
+			{% else %}
+				<li class="active"><span>{{ page }}</span></li>
+			{% endif %}
+		{% endif %}
+	{%- endfor %}
+	{% if pagination.next_num <= pagination.pages %}
+		<li><a href="{{ url_for(endpoint, page=pagination.next_num) }}">下一页</a></li>
+	{% else %}
+		<li class="disabled"><a>下一页</a></li>
+	{% endif %}
+{% endmacro %}

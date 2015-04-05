@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta property="qc:admins" content="1062517107356654" />
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+	<meta name="keyword" content="{% block keyword %}{% endblock %}">
+	<meta name="description" content="{% block description %}{% endblock %}">
+	<title>{% block title %}{% block subtitle %}首页{% endblock %} - HaoKu Admin{% endblock %}</title>
+	{% block meta %}{{ static_meta() }}{% endblock %}
+	<script type="text/javascript"src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" charset="utf-8" data-callback="true"></script>
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+		<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
+</head>
+<body>
+	{% block body %}{% endblock %}
+	{% block footer %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta name="keywords" content="{% block keywords %}{% endblock %}">
+	<meta name="description" content="{% block description %}{% endblock %}">
+	<title>
+		{%- block title -%}
+			{% block subtitle %}用户中心{% endblock %} - 好酷网
+		{%- endblock -%}
+	</title>
+	{% block static_header %}{{ static_header() }}{% endblock %}
+	{% block static_ie8 %}{{ static_ie8() }}{% endblock %}
+	<script>
+		var urls = {
+			accounts: {
+				login: '{{ url_for('users.login') }}',
+				logout: '{{ url_for('users.logout') }}',
+				check: '{{ url_for('users.check') }}',
+				sso: '{{ url_for('users.sso') }}'
+			},
+			profile: {
+				bind_email: '{{ url_for('profile.bind_email') }}'
+			},
+			jsonp: '{{ jsonp }}',
+			next: '{{ next }}'
+		}
+	</script>
+	{% block header_script %}{% endblock %}
+</head>
+<body id="{% block body_id %}{% endblock %}" class="
+		{%- block body_class %}{% endblock %}">
+{% block body %}{% endblock %}
+{% block footer_script %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,87 @@
+{% extends "profile/base.html" %}
+
+{% block title %}帐号绑定{% endblock %}
+{% block bind_profile_nav_class %}active{% endblock %}
+
+{% block profile_content %}
+<h3 class="page-header" style="font-weight:100;">帐号绑定</h3>
+<div class="row">
+	<div class="col-sm-3"></div>
+	<div class="col-sm-6 k-message"></div>
+</div>
+<form class="form-horizontal" action="{{ url_for('profile.bind') }}" method="post">
+	<div class="form-group">
+        <label class="control-label col-sm-3" for="nick">邮箱</label>
+        <div class="col-sm-6">
+            <div class="input-group">
+                <input type="text" class="form-control" id="email" name="email" readonly="" value="{{ current_user.email }}">
+                <span class="input-group-btn">
+                    {% if current_user.email_verify == 'already_verify' %}
+                    <a id="btn-email" class="btn btn-default disabled">验证通过</a>
+                    {% else %}
+                    <a id="btn-email" class="btn btn-default" data-loading-text="正在发送邮件...">发送激活邮件</a>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-3" for="nick">手机号码</label>
+        <div class="col-sm-6">
+            <div class="input-group">
+                <input type="text" class="form-control" id="phone" name="phone" readonly="" value="开发中">
+                <span class="input-group-btn"><a class="btn btn-default disabled">发送绑定验证码</a></span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-3" for="nick">微博</label>
+        <div class="col-sm-6">
+            <div class="input-group">
+                <input type="text" class="form-control" id="weibo" name="weibo" readonly="" value="开发中">
+                <span class="input-group-btn"><a class="btn btn-default disabled">绑定</a></span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-3" for="nick">QQ</label>
+        <div class="col-sm-6">
+            <div class="input-group">
+                <input type="text" class="form-control" id="qq" name="qq" readonly="" value="开发中">
+                <span class="input-group-btn"><a class="btn btn-default disabled">绑定</a></span>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}
+
+{% block footer_script %}
+<script type="text/javascript">
+$('#btn-email').click(function () {
+    var btn = $(this)
+    btn.button('loading')
+    $.ajax({
+        url: '{{ url_for('account.email_verify') }}',
+        type: 'POST',
+        cache: false,
+        success: function (data) {
+            if (data.code == 0 && data.status == 0) {
+                var times = 60;
+                success('发送成功，请稍后查收邮件。');
+                btn.html('等待验证');
+            } else if (data.code == 0 && data.status == 1) {
+                success('邮箱验证成功。');
+                btn.html('验证通过');
+            } else {
+                error('系统繁忙，请稍候刷新重试。');
+                btn.html('发送失败');
+            }
+        },
+        error: function() {
+            error('系统繁忙，请稍候刷新重试。');
+            btn.html('发送失败');
+        }
+    });
+});
+</script>
+{% endblock %}

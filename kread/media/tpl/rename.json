@@ -1,0 +1,4 @@
+{
+	"src/js/name.js": "src/js/{%= name %}.js",
+	"src/less/name.less": "src/less/{%= name %}.less"
+}

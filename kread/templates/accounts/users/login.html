@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block subtitle %}登录{% endblock %}
+{% block body_id %}login{% endblock %}
+
+
+{% block content %}
+<div class="container">
+	<div class="col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3">
+		{% if not other %}
+			<h3 class="page-header text-center">已登录帐号</h3>
+			<div class="avatar-box text-center" style="padding: 10px;">
+				<img class="avatar avatar-large" src="{{ current_user.avatar }}">
+				<div class="shadow-box">
+					<a class="avatar-shadow btn-login"><span>进入</span></a>
+				</div>
+			</div>
+			<div class="col-xs-6" style="padding: 8px 8px 8px 0px">
+				<button class="btn btn-info btn-lg btn-block btn-login">进入</button>
+			</div>
+			<div class="col-xs-6" style="padding: 8px 0px 8px 8px">
+				<a href="{{ url_for('users.login', other='true', next=next) }}" class="btn btn-default btn-lg btn-block">使用其他帐号</a>
+			</div>
+		{% else %}
+		<h3 class="page-header text-center">好酷 - 登录</h3>
+		<div class="message">{{ form | alert_first_error }}</div>
+		<form id="login-form" action="{{ url_for('users.login') }}" method="post" style="margin-bottom:20px">
+			{{ form | kform_inline }}
+			<button type="submit" class="btn btn-info btn-lg btn-block">登录</button>
+		</form>
+		<div class="pull-left">
+			<a href="{{ url_for('users.find_pass') }}">忘记密码？</a>
+		</div>
+		<div class="pull-right">
+			<a href="{{ url_for('users.register') }}">使用邮箱注册</a>
+		</div>
+		{% endif %}
+	</div>
+</div>
+{% endblock %}""

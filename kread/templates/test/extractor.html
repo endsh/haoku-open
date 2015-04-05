@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+	<div class="input-group form-search">
+	  <input id="url" class="form-control search-query" type="text">
+	  <span class="input-group-btn">
+	    <button id="submit" type="submit" class="btn btn-primary" data-type="last">Test Input</button>
+	  </span>
+	</div>
+	<textarea id="result" style="width:100%;height:600px;"></textarea>
+</div>
+<script>
+$('#submit').click(function () {
+	var url = '/u/' + $('#url').val();
+	$.get(url, {}, function (data) {
+		$('#result').val(data);
+	});
+});
+</script>
+{% endblock %}

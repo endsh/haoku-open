@@ -1,0 +1,81 @@
+{% extends "layout.html" %}
+
+{% block keywords %}{{ ','.join(article.tags) }}{% endblock %}
+{% block subtitle %}{{ article.title }}{% endblock %}
+{% block description %}{{ article.title }}{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="col-md-8">
+		<div class="article">
+			<div class="article-title">
+				<h1>{{ article.title }}</h1>
+			</div>
+			<div class="article-meta">
+				来源：<span class="article-source">{{ article.src_name }}</span>
+				<a class="article-link" href="{{ article.url | safe }}" target="_blank">查看原文</a>
+				<span class="article-pubtime">{{ article.pubdate }}</span>
+			</div>
+			<div class="article-content clearfix">{{ article.content | safe }}</div>
+			<div class="article-tip text-center">（本文来自互联网，不代表好酷网的观点和立场）</div>
+			<div class="article-share">
+			</div>
+		</div>
+		<div class="comments">
+			<div class="post-comment clearfix">
+				<form arction="" method="post">
+					<textarea></textarea>
+					<button class="btn btn-info">发表评论</button>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="box">
+			{% if article.icon_tags %}
+			<div class="topics related-topics clearfix">
+				<h3><span class="section-title">相关话题</span></h3>
+				{% for tag, icon in article.icon_tags.iteritems() %}
+					<div class="col-lg-4 col-xs-6">
+						<div class="topic-item">
+							<a href="{{ url_for('topics.topic_view', word=tag) }}">
+								<div class="topic-img" style="background-image:url('{{ icon }}');"></div>
+								<h4 class="topic-tag">{{ tag }}</h4>
+							</a>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+			{% endif %}
+			{% if article.hots %}
+			<div class="topics hots-topics clearfix">
+				<h3><span class="section-title">热门话题</span></h3>
+				{% for tag, icon in article.hots.iteritems() %}
+					<div class="col-lg-4 col-xs-6">
+						<div class="topic-item">
+							<a href="{{ url_for('topics.topic_view', word=tag) }}">
+								<div class="topic-img" style="background-image:url('{{ icon }}');"></div>
+								<h4 class="topic-tag">{{ tag }}</h4>
+							</a>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+			{% endif %}
+		</div>
+		<div class="hot-topics">
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block footer_script %}
+<script>
+$(".comments textarea").focus(function(){
+	$(".comments textarea").animate({height:'100px'}, 300);
+});
+$(".comments textarea").blur(function(){
+	$(".comments textarea").animate({height:'60px'}, 300);
+});
+</script>
+{% endblock %}

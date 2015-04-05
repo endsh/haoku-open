@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% from "libs/nav.html" import render_tags %}
+{% from "libs/article.html" import render_article %}
+{% from "libs/page.html" import render_pages %}
+
+{% block keywords %}{{ word }}{% endblock %}
+{% block subtitle %}{{ word }}{% endblock %}
+{% block description %}{{ word }}{% endblock %}
+
+{% block content %}
+<div class="content clearfix">
+	<div class="col-md-8 content-left">
+		<div class="topic">
+			<div class="topic-meta">
+				<h1>{{ word }}</h1>
+			</div>
+			<div class="topic-box">
+				<div class="topic-articles">
+				{% for article in articles %}
+					{{ render_article(article) }}
+				{% endfor %}
+				</div>
+				<div class="topic-pages">
+					{{ render_pages('topics.topic_page', page, count, kwargs={'word':word}) }}
+				</div>
+			</div>
+		</div><!-- /topic -->
+	</div>
+	<div class="col-md-4 content-right">
+		{{ render_tags(hots, '热门话题', 'section-hots') }}
+	</div>
+</div>
+{% endblock %}

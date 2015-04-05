@@ -1,0 +1,26 @@
+{% import 'admin/lib.html' as lib with context %}
+
+<div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	<h4 class="modal-title" id="submit-modal">编辑{{ admin_view.name }}({{ model._id }})</h4>
+</div>
+
+{% call lib.form_tag(form, action=request.url) %}
+	<div class="modal-body">
+		{{ lib.render_form_fields(form, form_opts=form_opts) }}
+	</div>
+	<div class="modal-footer">
+		{{ lib.render_form_buttons() }}
+	</div>
+{% endcall %}
+
+<script type="text/javascript">
+$("a[data-target=#submit-modal]").click(function(ev) {
+	ev.preventDefault();
+	var target = $(this).attr("href");
+	$("#submit-modal .modal-content").load(target, function() { 
+		$("#submit-modal").modal("show"); 
+	});
+});
+
+</script>

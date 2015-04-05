@@ -1,0 +1,18 @@
+# coding: utf-8
+import conf
+
+DEBUG = False
+
+STATIC_FOLDER = conf.media_root + '/api/dist'
+
+ALL_ERROR_JSON = True
+
+SECRET_KEY = 'f4135b9e9f5cafd10dd9a438eea62c9ff460935d89af612ccfb57935cedd02b9'
+PASSWORD_SECRET = '220c0eadf19280bfb8cec9b43a7e9b9e70df3eba82dc10295b710bf8b8b81434'
+WTF_CSRF_SECRET_KEY = '4d0bcd53ca71e433a014c3e7cf131caa6c4b719047932b2908ac7e36f593f475'
+
+CACHE_TYPE = 'redis'
+CACHE_REDIS_HOST = 'haocool.net'
+CACHE_REDIS_PORT = 6379
+CACHE_REDIS_PASSWORD = ''
+CACHE_REDIS_DB = 2

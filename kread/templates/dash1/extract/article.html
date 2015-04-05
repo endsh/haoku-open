@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block body %}
+<style>
+.article {
+	max-width: 800px;
+	font-size: 16px;
+	background: #fff;
+	padding: 20px 30px;
+	box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.article-meta {
+	border-bottom: 1px dashed #D3D3D3;
+	padding: 10px 0;
+	margin-bottom: 20px;
+}
+
+.article-meta span {
+	margin-right: 16px;
+}
+
+.article-content img {
+	max-width: 100%;
+	height: auto;
+}
+
+.k-img {
+	margin: 10px;
+}
+
+.bar {
+	width: 250px;
+	background: #F9FAFB;
+	min-height: 100%;
+	position: fixed;
+	overflow-y: auto;
+	box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
+}
+.main {
+	margin-left: 250px;
+}
+
+.k-logo {
+	color: #888;
+	font-size: 60px;
+	line-height: 1;
+	padding: 20px 30px;
+	margin: 0px auto;
+	width: 100px;
+	height: 100px;
+	border-radius: 50px;
+	display: block;
+	z-index: 999;
+	opacity: 1;
+	position: relative;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.bar .menu {
+	text-align: center;
+	margin: 20px auto;
+}
+
+.bar .btn-group .btn {
+	border-radius: 0;
+}
+
+.bar .list-group-item {
+	border-radius: 0;
+}
+</style>
+	<div class="bar">
+		<div class="btn btn-default k-logo">K</div>
+		<div class="btn-group btn-group-justified">
+			<div class="btn-group">
+				<button id="submit-common" type="submit" class="btn btn-default" data-type="last">RSS订阅</button>
+			</div>
+			<div class="btn-group">
+				<button id="submit-all" type="submit" class="btn btn-default" data-type="last">热门</button>
+				</span>
+			</div>
+		</div>
+		<div class="list-group">
+			<a class="list-group-item" href="http://www.baidu.com">新闻国内(qq.com)<span class="badge" style="background-color:rgb(192, 135, 222)">40</span></a>
+			<a class="list-group-item">新闻国内(qq.com)</a>
+			<a class="list-group-item">新闻国内(qq.com)</a>
+			<a class="list-group-item">新闻国内(qq.com)</a>
+		</div>
+		<div class="btn-group btn-group-justified">
+			<div class="btn-group">
+				<button id="submit-common" type="submit" class="btn btn-default" data-type="last">添加RSS源</button>
+			</div>
+			<div class="btn-group">
+				<button id="submit-show" type="submit" class="btn btn-default" data-type="last">编辑</button>
+				</span>
+			</div>
+		</div>
+	</div>
+	<div class="main">
+{% if article %}
+	<div class="article clearfix">
+		<h1 class="article-title">{{ article.title }}</h1>
+		<div class="article-meta">
+			<span style="color:#08C">{{ article.src_name }}</span>
+			<span>{{ article.pubtime }}</span>
+			<span class="pull-right" style="color:#08C"><a href="{{ url }}" target="_blank">查看原文</a></span>
+		</div>
+		<div class="article-content">{{ article.content | safe }}</div>
+	</div>
+{% endif %}
+	</div>
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends "layout.html" %}
+{% from "libs/nav.html" import render_tags, render_comments %}
+
+{% block keywords %}{{ ','.join(article.tags) }}{% endblock %}
+{% block subtitle %}{{ article.title }}{% endblock %}
+{% block description %}{{ article.title }}{% endblock %}
+ 
+{% block header_script %}
+<script type="text/javascript">
+var article = {
+	title: '{{ article.title }}（好酷网）',
+	image: '{{ article.icon }}',
+	url: '{{ request.url }}'
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+	<div class="col-md-8 content-left">
+		<div class="article">
+			<div class="article-title">
+				<h1>{{ article.title }}</h1>
+			</div>
+			<div class="article-meta">
+				来源：<span class="article-source">{{ article.src_name }}</span>
+				<a class="article-link" href="{{ article.url | safe }}" target="_blank">查看原文</a>
+				<span class="article-pubtime">{{ article.pubdate }}</span>
+			</div>
+			<div class="article-content clearfix">{{ article.text | safe }}</div>
+			<div class="article-tip text-center">（本文来自互联网，不代表好酷网的观点和立场）</div>
+			<div class="article-share">
+				<a class="share share-qq" data-to="qq" title="分享到QQ好友" href="javascript:void(0);"></a>
+				<a class="share share-weibo" data-to="weibo" title="分享到微博" href="javascript:void(0);"></a>
+				<a class="share share-tencent" data-to="tencent" title="分享到腾讯微博" href="javascript:void(0);"></a>
+				<a class="share share-qzone" data-to="qzone" title="分享到QQ空间" href="javascript:void(0);"></a>
+				<a class="share share-weixin" data-to="weixin" data-toggle="modal" data-target="#share-modal" title="分享到微信" href="javascript:void(0);"></a>
+				<div id="share-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+					<div class="modal-dialog" style="width:202px;">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+								<h4 class="modal-title" id="submit-modal">打开微信，扫一扫</h4>
+							</div>
+							<div class="modal-body">
+								<img src="http://s.jiathis.com/qrcode.php?url={{ request.url }}" alt="{{ article.title }}" title="{{ article.title }}">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="comments">
+			<div class="post-comment clearfix">
+				<div class="message"></div>
+				<form id="comment-form" action="{{ url_for('articles.article_view', date=article.id[:8], id=article.id[8:], type='post-comment') }}" method="post">
+					<textarea name="content" placeholder="我来说两句..."></textarea>
+					{% if comments %}
+						<span class="btn btn-default">共有 {{ count.comments }} 条评论</span>
+					{% else %}
+						<span class="btn btn-default">还没有人发表评论</span>
+					{% endif %}
+					<button id="btn-comment" class="btn btn-info pull-right" type="submit">发表评论</button>
+				</form>
+			</div>
+			<ul class="comments-box">
+				{{ render_comments(comments) }}
+			</ul>
+			{% if load_url %}
+				<a class="load-more fill" data-target=".comments-box" data-loading-text="加载中..." data-url="{{ load_url }}" href="javascript:void(0);">加载更多</a>
+			{% endif %}
+		</div>
+	</div>
+	<div class="col-md-4 content-right">
+		{{ render_tags(tags, '相关话题') }}
+		{{ render_tags(hots, '热门话题', 'section-hots') }}
+	</div>
+</div>
+{% endblock %}
+
+{% block footer_script %}
+{% endblock %}

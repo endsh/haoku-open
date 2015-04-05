@@ -1,0 +1,167 @@
+{% extends "layout-fluid.html" %}
+
+{% block content %}
+<style>
+.input-group, .btn-group {
+	margin-bottom: 20px;
+}
+#history {
+	max-height: 470px;
+	overflow-y: auto;
+	margin-bottom: 0;
+}
+#show {
+	width:100%;
+	height:540px;
+	overflow-y:auto;
+	border-radius: 4px;
+	background-color: #FFF;
+	border: 1px solid #DDD;
+	padding: 20px;
+}
+@media (max-width: 992px) {
+	#history {
+		max-height: 124px;
+		margin-bottom: 20px;
+	}
+	#show {
+		height:340px;
+	}
+}
+.title {
+	font-weight: normal;
+	font-size: 24px;
+	border-bottom: thin solid #ddd;
+	padding: 0px 0px 5px;
+	margin-top: 0px;
+	margin-bottom: 15px;
+}
+.title a {
+	color: #444;
+    text-decoration: none;
+}
+
+.subtitle {
+	font-weight: normal;
+	font-size: 22px;
+	border-bottom: thin solid #ddd;
+	padding: 0px 0px 5px;
+	margin-top: 20px;
+	margin-bottom: 15px;
+}
+
+.keywords a {
+	padding: 6px 16px;
+	font-weight: normal;
+	line-height: 1;
+	color: #555;
+	text-align: center;
+	border: 1px solid #D5D6D7;
+	border-radius: 16px;
+	background-color: transparent;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	display: block;
+	outline: medium none;
+	font-size: 16px;
+	text-decoration: none;
+	float: left;
+}
+</style>
+<div class="row">
+	<div class="col-md-4">
+		<div class="input-group">
+			<input id="url" class="form-control" type="text" placeholder="文章链接">
+			<span class="input-group-btn">
+				<button class="btn btn-default" type="button" onclick="$('#url').val('')"><i class="glyphicon glyphicon-remove"></i></button>
+			</span>
+		</div>
+		<div class="btn-group btn-group-justified">
+			<div class="btn-group">
+				<button id="submit-common" type="submit" class="btn btn-primary" data-type="last">Common</button>
+			</div>
+			<div class="btn-group">
+				<button id="submit-all" type="submit" class="btn btn-primary" data-type="last">All</button>
+				</span>
+			</div>
+		</div>
+		<div id="history" class="list-group">
+			{% for href in historys %}
+				<a class="list-group-item" href="{{ href }}" onclick="load_url(this.href);return false;">{{ href }}</a>
+			{% endfor %}
+		</div>
+	</div>
+	<div id="right" class="col-md-8">
+		<h2 class="title"></h2>
+		<div id="show"></div>
+	</div>
+</div>
+<script>
+function sort(obj) {
+	var sortable = [];
+	for (var i in obj) {
+		sortable.push([i, obj[i]])
+	}
+	sortable.sort(function(a, b) { return b[1] - a[1] })
+	return sortable
+}
+
+function add_words(words, name) {
+	var has = false
+	for (var i in words) {
+		has = true
+		break
+	}
+	if (!has) {
+		return ''
+	}
+	html = '<h2 class="subtitle">' + name + '</h2>'
+	words = sort(words);
+	html += '<div class="keywords clearfix">'
+	for (var i in words) {
+		html += '<a href="#" class="btn btn-default">' + words[i][0] + '(' + words[i][1] + ')</a>';
+	}
+	html += '</div>';
+	return html;
+}
+
+function load_url(url) {
+	$('#url').val(url);
+	$('#submit-common').click();
+}
+$('#submit-common').click(function () {
+	if ($.trim($('#url').val()).length == 0) {
+		return
+	}
+	var url = '/segment/' + $('#url').val();
+	$.getJSON(url, {}, function (data) {
+		$('.title').html(data.title)
+		var html = ''
+		html += add_words(data.words.eng, '英语')
+		html += add_words(data.words.nr, '人物')
+		html += add_words(data.words.nt, '机构')
+		html += add_words(data.words.ns, '地点')
+		html += add_words(data.words.compos, '词组')
+		html += add_words(data.words.blackets, '专有名词')
+		html += add_words(data.words.src, '普通名词')
+		html += add_words(data.words.all, '综合')
+		$('#show').html(html)
+	});
+});
+$('#submit-all').click(function () {
+	var url = '/segment/all';
+	$.getJSON(url, {}, function (data) {
+		var html = '';
+		for (var i in data) {
+		}
+		$('#show').html(html);
+	});
+});
+$(document).keyup(function (e) {
+	var key =  e.which;
+	if (key == 13) {
+		$('#submit-show').click();
+	}
+});
+</script>
+{% endblock %}

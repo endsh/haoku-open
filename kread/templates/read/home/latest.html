@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% from "libs/nav.html" import render_tags, render_keywords %}
+{% from "libs/article.html" import render_article %}
+
+{% block keywords %}最新,最新发现,最新文章,最新资讯,最新报道,最新科技{% endblock %}
+{% block subtitle %}最新发现{% endblock %}
+{% block description %}最新发现文章，好酷网最新收录。更多资讯请登录www.haoku.net进行阅读。{% endblock %}
+
+{% block content %}
+<div class="content clearfix">
+	<div class="col-md-8 content-left">
+		<div class="topic">
+			<div class="topic-meta">
+				<h1>最新发现文章</h1>
+			</div>
+			<div class="topic-box">
+				<div class="topic-articles">
+				{% for article in articles %}
+					{{ render_article(article) }}
+				{% endfor %}
+				</div>
+				{% if load_url %}
+				<a class="load-more" data-target=".topic-articles" data-loading-text="加载中..." data-url="{{ load_url }}" href="javascript:void(0)">加载更多</a>
+				{% else %}
+				<a class="load-more disabled" href="javascript:void(0)">没有了</a>
+				{% endif %}
+			</div>
+		</div><!-- /topic -->
+	</div>
+	<div class="col-md-4 content-right">
+		{{ render_keywords(keywords, '今日热搜') }}
+		{{ render_tags(hots, '热门话题', 'section-hots') }}
+	</div>
+</div>
+{% endblock %}

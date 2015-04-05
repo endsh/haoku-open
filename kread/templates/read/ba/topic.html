@@ -1,0 +1,106 @@
+{% extends "layout.html" %}
+
+{% block keywords %}{{ topic.word }}{% endblock %}
+{% block subtitle %}{{ topic.word }}{% endblock %}
+{% block description %}{{ topic.word }}{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="col-md-8">
+		<div class="topic">
+			<div class="topic-meta">
+				<h1>
+					{{ topic.word }}
+					<a class="btn btn-default btn-outline btn-shape pull-right" href="#">订阅</a>
+					<a class="btn btn-default btn-outline btn-shape pull-right" href="#">分享</a>
+				</h1>
+			</div>
+			<div class="topic-articles">
+				{% for article in topic.articles %}
+				<div class="article-box clearfix">
+					{% if article.imgs_cnt >= 3 %}
+					<h3 class="article-title">
+						<a href="{{ url_for('articles.article_view', id=article._id) }}" target="_blank">
+						{{- article.title -}}
+						</a>
+					</h3>
+					<div class="article-imgs clearfix">
+						<div class="col-xs-4">
+							<a href="{{ url_for('articles.article_view', id=article._id) }}" target="_blank">
+								<div class="article-img" style="background-image:url('{{ article.imgs.0  }}');"></div>
+							</a>
+						</div>
+						<div class="col-xs-4">
+							<a href="{{ url_for('articles.article_view', id=article._id) }}" target="_blank">
+								<div class="article-img" style="background-image:url('{{ article.imgs.1  }}');"></div>
+							</a>
+						</div>
+						<div class="col-xs-4">
+							<a href="{{ url_for('articles.article_view', id=article._id) }}" target="_blank">
+								<div class="article-img" style="background-image:url('{{ article.imgs.2  }}');"></div>
+							</a>
+						</div>
+					</div>
+					<div class="article-meta">
+						<span class="article-source">{{ article.src_name }}</span>
+						<span class="article-pubtime">{{ article.pubdate }}</span>
+					</div>
+					{% elif article.imgs_cnt >= 1 %}
+					<div class="col-xs-8">
+						<h3 class="article-title">
+							<a href="{{ url_for('articles.article_view', id=article._id) }}" target="_blank">
+							{{- article.title -}}
+							</a>
+						</h3>
+						<div class="article-meta">
+							<span class="article-source">{{ article.src_name }}</span>
+							<span class="article-pubtime">{{ article.pubdate }}</span>
+						</div>
+					</div>
+					<div class="col-xs-4">
+						<a href="{{ url_for('articles.article_view', id=article._id) }}" target="_blank">
+							<div class="article-img" style="background-image:url('{{ article.imgs.0  }}');"></div>
+						</a>
+					</div>
+					{% else %}
+					<div class="col-xs-12">
+						<h3 class="article-title">
+							<a href="{{ url_for('articles.article_view', id=article._id) }}" target="_blank">
+							{{- article.title -}}
+							</a>
+						</h3>
+						<div class="article-meta">
+							<span class="article-source">{{ article.src_name }}</span>
+							<span class="article-pubtime">{{ article.pubdate }}</span>
+						</div>
+					</div>
+					{% endif %}
+				</div>
+				{% else %}
+				<p>暂时没有关于此话题的文章</p>
+				{% endfor %}
+			</div>
+			<div class="topic-more text-center">
+				<a class="btn btn-info" href="#">加载更多</a>
+			</div>
+		</div><!-- /topic -->
+	</div>
+	<div class="col-md-4">
+		{% if topic.hots %}
+		<div class="topics hots-topics clearfix">
+			<h3><span class="section-title">热门话题</span></h3>
+			{% for tag, icon in topic.hots.iteritems() %}
+				<div class="col-lg-4 col-xs-6">
+					<div class="topic-item">
+						<a href="{{ url_for('topics.topic_view', word=tag) }}">
+							<div class="topic-img" style="background-image:url('{{ icon }}');"></div>
+							<h4 class="topic-tag">{{ tag }}</h4>
+						</a>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+		{% endif %}
+	</div>
+</div>
+{% endblock %}

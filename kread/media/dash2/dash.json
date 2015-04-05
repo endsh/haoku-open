@@ -1,0 +1,10 @@
+{
+  "name": "dash",
+  "title": "HaoKu Dash Board",
+  "description": "This is a HaoKu Web Project.",
+  "version": "1.0.0",
+  "homepage": "http://dash.haoku.net/",
+  "author": {
+    "name": "HaoKu Inc."
+  }
+}

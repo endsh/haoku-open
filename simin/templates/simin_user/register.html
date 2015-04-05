@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block subtitle %}注册账号{% endblock %}
+{% block body_id %}register{% endblock %}
+
+{% block content %}
+<div class="container">
+	<div class="col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3">
+		<h3 class="page-header text-center">注册账号</h3>
+		<div class="message">{{ form | alert_first_error }}</div>
+		<form id="register-form" action="{{ url_for('users.register') }}" method="post">
+			{{ form | kform_inline }}
+			<div class="col-xs-6" style="padding: 8px 8px 8px 0px">
+				<button type="submit" class="btn btn-info btn-lg btn-block">马上注册</button>
+			</div>
+			<div class="col-xs-6" style="padding: 8px 0px 8px 8px">
+				<a href="{{ url_for('users.login') }}" class="btn btn-default btn-lg btn-block">返回登录</a>
+			</div>
+		</form>
+	</div>
+</div>
+{% endblock %}

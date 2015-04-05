@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+{% from "libs/nav.html" import render_front, render_tags, render_keywords %}
+{% from "libs/article.html" import render_simple %}
+
+{% block keywords %}好酷,新闻,头条,科技,数码,互联网,体育,财经,教育,星座,两性{% endblock %}
+{% block subtitle %}酷酷的阅读{% endblock %}
+{% block description %}好酷网是广州好酷科技旗下经营的网站之一，主要提供移动阅读与搜索的服务。其实我们不是高富帅，我们没有多牛逼的技术，我们也没有多有钱的爹，甚至连有钱的叔叔也没有，我们就是一群屌丝，我们没有崇高的理想，没有伟大的目标，我们只是靠着仅有的这点能力，敲敲两行代码，时不时加班到凌晨2点，只求换得一餐温饱。{% endblock %}
+{% block body_class %}home{% endblock %}
+
+{% block content %}
+<div class="front clearfix">
+	<div class="col-lg-9 front-main clearfix">
+		<div class="col-md-6 front-big">{{ render_front(articles.0) }}</div>
+		<div class="col-md-6 front-right">
+			{% for article in articles[1:5] %}
+			<div class="col-xs-6">{{ render_front(article) }}</div>
+			{% endfor %}
+		</div>
+		<div class="col-md-12 front-bottom">
+			{% for article in articles[6:10] %}
+			<div class="col-md-3 col-xs-6">{{ render_front(article) }}</div>
+			{% endfor %}
+		</div>
+	</div>
+	<div class="col-lg-3 front-side">
+		<div class="front-side-one">{{ render_front(articles.10) }}</div>
+		<div class="front-side-two">{{ render_front(articles.11) }}</div>
+	</div>
+</div>
+<div class="content clearfix">
+	<div class="col-md-8 content-left">
+		{% for topic in topics %}
+		<div class="section section-{{ loop.index }}">
+			<div class="section-header">
+				<span class="section-title">{{ topic.cate }}</span>
+				<a class="section-more" href="{{ url_for('topics.topic_view', word=topic.cate) }}">全部</a>
+			</div>
+			<div id="section-articles-{{ loop.index }}" class="section-articles">
+				{% for article in topic.articles[0:4] %}
+					{{ render_simple(article) }}
+				{% endfor %}
+			</div>
+			<a class="load-more" data-target="#section-articles-{{ loop.index }}" data-loading-text="加载中..." data-url="{{ topic.load_url }}" href="javascript:void(0);">加载更多</a>
+		</div>
+		{% endfor %}
+	</div>
+	<div class="col-md-4 content-right">
+		{{ render_keywords(keywords, '今日热搜') }}
+		{{ render_tags(hots, '热门话题', 'section-hots') }}
+	</div>
+</div>
+{% endblock %}

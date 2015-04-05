@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+
+{% block header_script %}
+
+<style type="text/css">
+.form-horizontal .btn {
+	padding: 6px 20px;
+}
+
+.k-profile-nav {
+	border-right: 1px solid #DDD;
+	padding-right: 0px;
+	margin-top: 20px;
+}
+.k-profile-nav a.list-group-item {
+	border:none;
+	background: transparent;
+	padding-right: 0px;
+	padding-left: 20px;
+	border: 1px solid transparent;
+}
+
+.k-profile-nav a.list-group-item:hover,
+.k-profile-nav a.list-group-item.active {
+	border-radius: 4px 0px 0px 4px;
+	border: 1px solid #DDD;
+	color: #333;
+	background: #FFF;
+	padding-right: 0px;
+	padding-left: 20px;
+}
+
+.k-profile-nav a.list-group-item:hover {
+	background: #F9FAFB;
+}
+
+.k-profile-content {
+	min-height: 420px;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row well">
+	<div class="col-md-2">
+		<div class="btn btn-default k-logo">K</div>
+		<div class="list-group clearfix k-profile-nav">
+			<a class="list-group-item {% block index_profile_nav_class %}{% endblock %}" href="{{ url_for('profile.index') }}">基本资料</a>
+			<a class="list-group-item {% block bind_profile_nav_class %}{% endblock %}" href="{{ url_for('profile.bind') }}">帐号绑定</a>
+			<a class="list-group-item {% block change_pass_profile_nav_class %}{% endblock %}" href="{{ url_for('profile.change_pass') }}">修改密码</a>
+		</div>
+	</div>
+	<div class="col-md-10 k-profile-content">{% block profile_content %}{% endblock %}</div>
+</div>
+{% endblock %}		
+

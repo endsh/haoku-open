@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block title %}登录{% endblock %}
+
+
+{% block content %}
+
+{% endblock %}
+
+{% block footer_script %}
+<script type="text/javascript">
++function ($) {
+ 
+var res=$.ajax({  
+  type:"get",  
+  dataType:"jsonp",/*-----------------------*/  
+  url: "{{ url | safe }}",  
+  crossDomain:true,/*-----------------------*/  
+  success: function(data){  
+                alert("success:"+data.name);  
+          
+        },  
+  beforeSend:function(){  
+        },  
+  complete:function(data,status){  
+        }  
+});
+	
+}(jQuery);
+</script>
+{% endblock %}

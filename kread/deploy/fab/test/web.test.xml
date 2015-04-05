@@ -1,0 +1,11 @@
+<uwsgi>
+	<chdir>/home/test/checkouts/haoku.net/read</chdir>
+	<socket>/home/test/run/web.test.sock</socket>
+	<master>true</master>
+	<pidfile>/home/test/run/web.test.pid</pidfile>
+	<processes>2</processes>
+	<module>web:app</module>
+	<max-requests>1000</max-requests>
+	<daemonize>/home/test/log/web.test.log</daemonize>
+	<buffer-size>32768</buffer-size>
+</uwsgi>

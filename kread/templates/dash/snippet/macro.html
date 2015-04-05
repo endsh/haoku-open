@@ -1,0 +1,39 @@
+{% macro sidebar_menu(first, second) %}	
+	{% set nav_items = [
+		('/', 			'dashboard',	'fa-dashboard', 	'仪表盘',		[]),
+		('/log', 'log',		'fa-search',			'test',	[]),
+		('/accounts/center',	'accounts',		'fa-user',			'用户中心',	[
+			('/journal/task',		'jouranl_add',	'任务发放'),
+			('/journal/recode',		'jouranl_post',	'任务提交'),
+			('/accounts/role',		'role',	'用户权限'),
+			('/accounts/user',		'user',	'用户管理'),
+		]),
+		('/control',		'control',		'fa-bar-chart-o',			'爬虫监控',	[
+			('/control/',		'control',		'实时统计'),
+			('/control/debug',	'debug',		'爬虫调试'),
+		]),
+		('/mongo',		'mongo',		'fa-globe',			'爬虫数据',	[
+			('/mongo/domain',		'domain',		'网站 - Domain'),
+			('/mongo/catecory',		'catecory',		'分类 - Catecory'),
+			('/mongo/template',		'template',		'模板 - Template'),
+			('/mongo/article',		'article',		'文章 - Article'),
+			('/mongo/web_article',	'web_article',	'Web文章 - Web Article'),
+		]),
+		('/distance',		'distance',		'fa-search', '距离', []),
+		('/test',		'test',		'fa-play', '测试', [
+			('/test/simhash',		'simhash',	'simhash'),
+		]),
+	] %}
+	{% for href, id, icon, caption, subs in nav_items %}
+		<li{% if id == first and subs%} class="active"{% endif %}>
+			<a{% if id == first and not subs%} class="active"{% endif %} href="{{ href }}"><i class="fa {{ icon }}"></i> {{ caption }}{% if subs %}<span class="fa arrow"></span>{% endif %}</a>
+			{% if subs %}
+				<ul class="nav nav-second-level">
+				{% for href, id, caption in subs %}
+					<li><a{% if id == second %} class="active"{% endif %} href="{{ href }}">{{ caption }}</a></li>
+				{% endfor %}
+				</ul>
+			{% endif %}
+		</li>
+	{% endfor %}
+{% endmacro %}

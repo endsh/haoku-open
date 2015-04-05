@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+
+{% block title %}重设密码{% endblock %}
+
+{% block content %}
+<div class="k-box k-input-box clearfix">
+	<h3 class="page-header">好酷 - 重设密码</h3>
+	<div class="k-message">{{ form | alert_first_error }}</div>
+	<form id="reset-pass-form" action="{{ url_for('account.reset_pass', code=code) }}" method="post">
+		{{ form | kform_inline }}
+		<button type="submit" class="btn btn-primary btn-lg btn-block">提交</button>
+	</form>
+</div>
+{% endblock %}  
+
+{% block footer_script %}
+<script type="text/javascript">
+var message = {
+	passwordEmpty: '新密码不能为空',
+	passwordShort: '新密码长度不能小于6个字符',
+	passwordLong: '新密码长度不能大于18个字符',
+	passwordUnsafe: '新密码只能包含英文字符，数字或其他可见字符',
+	repasswordEmpty: '确认密码不能为空',
+	repasswordDiff: '两次密码不一致',
+};
+
+function check_password() {
+	var password = $('#password').val();
+	if (password.length == 0) {
+		error(message.passwordEmpty);
+	} else if (password.length < 6) {
+		error(message.passwordShort);
+	} else if (password.length > 18) {
+		error(message.passwordLong);
+	} else if (!password.match(/^[\w\d\-\[\]{}|\\,.\/<>;:'"_`~!@#$%^&*()+= ]+$/)) {
+		error(message.passwordUnsafe);
+	} else {
+		return true;
+	}
+	return false;
+}
+
+function check_repassword() {
+	var password = $('#password').val();
+	var repassword = $('#repassword').val();
+	if (repassword.length == 0) {
+		error(message.repasswordEmpty);
+	} else if (password != repassword) {
+		error(message.repasswordDiff);
+	} else {
+		return true;
+	}
+	return false;
+}
+
+$('#reset-pass-form').submit(function () {
+	return check_password() && check_repassword();
+});
+</script>
+{% endblock %}

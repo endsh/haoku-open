@@ -1,0 +1,35 @@
+{% import 'admin/lib.html' as lib with context %}
+
+<style type="text/css">
+.col-md-10 {
+	width: 79.33333%;
+}
+.col-md-2 {
+	width: 20.666666%;
+}
+</style>
+<div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	<h4 class="modal-title" id="submit-modal">添加{{ admin_view.name }}</h4>
+</div>
+
+{% call lib.form_tag(form, action=get_url('.create_view',  url=return_url)) %}
+	<div class="modal-body">
+		{{ lib.render_form_fields(form, form_opts=form_opts) }}
+	</div>
+
+	<div class="modal-footer">
+		{{ lib.render_form_buttons() }}
+	</div>
+{% endcall %}
+
+<script type="text/javascript">
+$("a[data-target=#submit-modal]").click(function(ev) {
+	ev.preventDefault();
+	var target = $(this).attr("href");
+
+	$("#submit-modal .modal-content").load(target, function() { 
+		$("#submit-modal").modal("show"); 
+	});
+});
+</script>

@@ -1,0 +1,81 @@
+
+{% macro render_article(article) %}
+	{% if article.icon_cnt >= 3 %}
+		{{ render_three(article) }}
+	{% elif article.icon_cnt >= 1 %}
+		{{ render_simple(article) }}
+	{% else %}
+		{{ render_text(article) }}
+	{% endif %}
+{% endmacro %}
+
+
+{% macro render_three(article) %}
+<div class="article-box clearfix">
+	<h3 class="article-title">
+		<a href="{{ url_for('articles.article_view', date=article.id[:8], id=article.id[8:]) }}" target="_blank">
+		{{- article.title -}}
+		</a>
+	</h3>
+	<div class="article-imgs clearfix">
+		<div class="col-xs-4">
+			<a href="{{ url_for('articles.article_view', date=article.id[:8], id=article.id[8:]) }}" target="_blank">
+				<div class="article-img" style="background-image:url('{{ article.icons.0  }}');"></div>
+			</a>
+		</div>
+		<div class="col-xs-4">
+			<a href="{{ url_for('articles.article_view', date=article.id[:8], id=article.id[8:]) }}" target="_blank">
+				<div class="article-img" style="background-image:url('{{ article.icons.1  }}');"></div>
+			</a>
+		</div>
+		<div class="col-xs-4">
+			<a href="{{ url_for('articles.article_view', date=article.id[:8], id=article.id[8:]) }}" target="_blank">
+				<div class="article-img" style="background-image:url('{{ article.icons.2  }}');"></div>
+			</a>
+		</div>
+	</div>
+	<div class="article-meta">
+		<span class="article-source">{{ article.src_name }}</span>
+		<span class="article-pubtime">{{ article.pubdate }}</span>
+	</div>
+</div>
+{% endmacro %}
+
+
+{% macro render_simple(article) %}
+<div class="article-box clearfix">
+	<div class="col-xs-8">
+		<h3 class="article-title">
+			<a href="{{ url_for('articles.article_view', date=article.id[:8], id=article.id[8:]) }}" target="_blank">
+			{{- article.title -}}
+			</a>
+		</h3>
+		<div class="article-meta">
+			<span class="article-source">{{ article.src_name }}</span>
+			<span class="article-pubtime">{{ article.pubdate }}</span>
+		</div>
+	</div>
+	<div class="col-xs-4">
+		<a href="{{ url_for('articles.article_view', date=article.id[:8], id=article.id[8:]) }}" target="_blank">
+			<div class="article-img" style="background-image:url('{{ article.icon  }}');"></div>
+		</a>
+	</div>
+</div>
+{% endmacro %}
+
+
+{% macro render_text(article) %}
+<div class="article-box clearfix">
+	<div class="col-xs-12">
+		<h3 class="article-title">
+			<a href="{{ url_for('articles.article_view', date=article.id[:8], id=article.id[8:]) }}" target="_blank">
+			{{- article.title -}}
+			</a>
+		</h3>
+		<div class="article-meta">
+			<span class="article-source">{{ article.src_name }}</span>
+			<span class="article-pubtime">{{ article.pubdate }}</span>
+		</div>
+	</div>
+</div>
+{% endmacro %}

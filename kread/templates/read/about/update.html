@@ -1,0 +1,65 @@
+{% extends "layout.html" %}
+
+{% block subtitle %}更新日志{% endblock %}
+
+{% block main %}
+<div class="change">
+	<div class="banner"></div>
+	<div class="menu text-center">
+		<div class="container">
+			<a href="/about">关于我们</a>
+			<a href="./join">加入我们</a>
+			<a href="./media">媒体报道</a>
+			<a href="./link">合作伙伴</a>
+			<a href="./contact">联系我们</a>
+			<a href="./update" class="active">更新日志</a>
+		</div>
+	</div>
+	<div class="container changelog">
+		<h3>更新日志</h3>
+		<p>记录小酷成长的一点一滴。</p>
+		<hr>
+		<ul class="change-lists">
+			<li>
+				<div class="header">
+					<span class="title">好酷网版本 1.1.2 发布</span>
+					<span class="date">2014.11.11</span>	
+				</div>
+				<div class="content">
+					<p>1、初版的评论功能来啦！</p>
+					<p>2、支持腾讯微博、QQ帐号登录。 </p>
+					<p>3、离线下载支持全选以及进度提示的问题修复。 </p>
+					<p>4、修复Qzone分享错误的问题。</p>
+					<p>5、支持站点搜索功能。</p>
+				</div>
+			</li>
+			<li>
+				<div class="header">
+					<span class="title">安卓版本 1.1.10 发布</span>
+					<span class="date">2014.06.18</span>	
+				</div>
+				<div class="content">
+					<p>1、由于亲们不断的吐槽我们的正文排版很粗糙，我们痛下决心解决该问题。目前来看多数页面的排版有了很大的改观，客户端的样式设置也做了相应变动。对于排版，我们会继续优化的。 </p>
+					<p>2、针对魅族的smartbar，我们做了全面的适配（06.23日update，魅族应用商店已将我们加入到适配smartbar的应用之列）。</p>
+					<p>3、临时版本，将不在加到自动更新中。</p>
+					<p>4、修复正文因为图片加载阻塞造成的显示慢的问题。</p>
+					<p>5、UI细节改进。</p>
+				</div>
+			</li>
+			<li>
+				<div class="header">
+					<span class="title">iOS 2.7.1 发布 </span>
+					<span class="date">2014.06.17</span>	
+				</div>
+				<div class="content">
+					<p>1、修复在切换用户时我的主题/站点没有重新加载的bug，支持我的主题/站点下拉刷新。</p>
+					<p>2、替换图片加载组件，可硬盘缓存图片和无网显示。</p>
+					<p>3、修复因为新浪微博更改规则造成不能分享的问题，支持pocket的分享。</p>
+					<p>4、修复正文因为图片加载阻塞造成的显示慢的问题。</p>
+					<p>5、UI细节改进。</p>
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>
+{% endblock %}

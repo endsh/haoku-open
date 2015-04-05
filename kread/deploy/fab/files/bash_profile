@@ -1,0 +1,43 @@
+. .bashrc
+
+export HAOKU_READ=release
+export PYTHONPATH=$PYTHONPATH:~/checkouts/haoku.net/read:~/checkouts/simin
+export EDITOR=vim
+
+. bin/activate
+
+cd ~/checkouts/haoku.net
+
+alias chk='cd ~/checkouts/haoku.net'
+
+alias later-start='~/bin/uwsgi ~/etc/later.xml'
+alias later-reload='~/bin/uwsgi --reload ~/run/later.pid'
+alias later-stop='~/bin/uwsgi --stop ~/run/later.pid'
+
+alias dash-start='~/bin/uwsgi ~/etc/dash.xml'
+alias dash-reload='~/bin/uwsgi --reload ~/run/dash.pid'
+alias dash-stop='~/bin/uwsgi --stop ~/run/dash.pid'
+
+alias web-test-start='HAOKU_TEST=TEST ~/bin/uwsgi ~/etc/web.test.xml'
+alias web-test-reload='HAOKU_TEST=TEST ~/bin/uwsgi --reload ~/run/web.test.pid'
+alias web-test-stop='HAOKU_TEST=TEST ~/bin/uwsgi --stop ~/run/web.test.pid'
+
+alias api-v1-test-start='HAOKU_TEST=TEST ~/bin/uwsgi ~/etc/api.v1.test.xml'
+alias api-v1-test-reload='HAOKU_TEST=TEST ~/bin/uwsgi --reload ~/run/api.v1.test.pid'
+alias api-v1-test-stop='HAOKU_TEST=TEST ~/bin/uwsgi --stop ~/run/api.v1.test.pid'
+
+alias accounts-test-start='HAOKU_TEST=TEST ~/bin/uwsgi ~/etc/accounts.test.xml'
+alias accounts-test-reload='HAOKU_TEST=TEST ~/bin/uwsgi --reload ~/run/accounts.test.pid'
+alias accounts-test-stop='HAOKU_TEST=TEST ~/bin/uwsgi --stop ~/run/accounts.test.pid'
+
+alias accounts-api-v1-test-start='HAOKU_TEST=TEST ~/bin/uwsgi ~/etc/accounts.api.v1.test.xml'
+alias accounts-api-v1-test-reload='HAOKU_TEST=TEST ~/bin/uwsgi --reload ~/run/accounts.api.v1.test.pid'
+alias accounts-api-v1-test-stop='HAOKU_TEST=TEST ~/bin/uwsgi --stop ~/run/accounts.api.v1.test.pid'
+
+alias web-start='~/bin/uwsgi ~/etc/web.xml'
+alias web-reload='~/bin/uwsgi --reload ~/run/web.pid'
+alias web-stop='~/bin/uwsgi --stop ~/run/web.pid'
+
+alias api-v1-start='~/bin/uwsgi ~/etc/api.v1.xml'
+alias api-v1-reload='~/bin/uwsgi --reload ~/run/api.v1.pid'
+alias api-v1-stop='~/bin/uwsgi --stop ~/run/api.v1.pid'

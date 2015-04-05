@@ -1,0 +1,102 @@
+{% extends "layout-fluid.html" %}
+
+{% block content %}
+<style>
+.k-drop-tree {
+	color: red;
+	background: yellow;
+	padding: 8px;
+}
+.input-group, .btn-group {
+	margin-bottom: 20px;
+}
+#history {
+	max-height: 470px;
+	overflow-y: auto;
+	margin-bottom: 0;
+}
+#show {
+	display:none;
+	width:100%;
+	height:580px;
+	overflow-y:auto;
+}
+#result {
+	width:100%;
+	height:580px;
+}
+@media (max-width: 767px) {
+	#history {
+		max-height: 124px;
+		margin-bottom: 20px;
+	}
+	#show {
+		height:340px;
+	}
+	#result {
+		height:340px;
+	}
+}
+</style>
+<div class="row">
+	<div class="col-md-4">
+		<div class="input-group">
+			<input id="url" class="form-control" type="text" placeholder="文章链接">
+			<span class="input-group-btn">
+				<button class="btn btn-default" type="button" onclick="$('#url').val('')"><i class="glyphicon glyphicon-remove"></i></button>
+			</span>
+		</div>
+		<div class="btn-group btn-group-justified">
+			<div class="btn-group">
+				<button id="submit-common" type="submit" class="btn btn-primary" data-type="last">Common</button>
+			</div>
+			<div class="btn-group">
+				<button id="submit-all" type="submit" class="btn btn-primary" data-type="last">All</button>
+				</span>
+			</div>
+		</div>
+
+		<div id="history" class="list-group">
+			{% for href in historys %}
+				<a class="list-group-item" href="{{ href }}" onclick="load_url(this.href);return false;">{{ href }}</a>
+			{% endfor %}
+		</div>
+	</div>
+	<div id="right" class="col-md-8">
+		<div id="show" style=""></div>
+		<textarea id="result" style=""></textarea>
+	</div>
+</div>
+<script>
+function load_url(url) {
+	$('#url').val(url);
+	$('#submit-common').click();
+}
+
+$('#submit-common').click(function () {
+	if ($.trim($('#url').val()).length == 0) {
+		return
+	}
+	$('#show').hide();
+	$('#result').show();
+	var url = '/page/' + $('#url').val();
+	$.get(url, {}, function (data) {
+		$('#result').val(data);
+	});
+});
+$('#submit-all').click(function () {
+	var url = '/page/all';
+	$('#show').hide();
+	$('#result').show();
+	$.get(url, {}, function (data) {
+		$('#result').val(data);
+	});
+});
+$(document).keyup(function (e) {
+	var key =  e.which;
+	if (key == 13) {
+		$('#submit-common').click();
+	}
+});
+</script>
+{% endblock %}

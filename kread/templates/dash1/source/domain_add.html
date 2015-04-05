@@ -1,0 +1,23 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title" id="submit-modal">发表Domain</h4>
+</div>
+<form action="{{ url_for(source.domain_add) }}" method="post">
+    <div class="modal-body">
+        {{ form | kfrom_inline}}
+    <button type="submit" class="btn btn-primary">提交</button>
+    </div>
+</form>
+
+{% block foot-script %}
+<script type="text/javascript">
+$("a[data-target=#submit-modal]").click(function(ev) {
+    ev.preventDefault();
+    var target = $(this).attr("href");
+
+    $("#submit-modal .modal-content").load(target, function() { 
+         $("#submit-modal").modal("show"); 
+    });
+});
+</script>
+{% endblock %}

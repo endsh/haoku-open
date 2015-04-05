@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block subtitle %}关于我们{% endblock %}
+
+{% block main %}
+<div class="about">
+	<div class="banner"></div>
+	<div class="menu text-center">
+		<div class="container">
+			<a href="/about" class="active">关于我们</a>
+			<a href="./join">加入我们</a>
+			<a href="./media">媒体报道</a>
+			<a href="./link">合作伙伴</a>
+			<a href="./contact">联系我们</a>
+			<a href="./update">更新日志</a>
+		</div>
+	</div>
+	<div class="container product">
+		<h3>关于小酷</h3>
+		<p>小酷就是一支年轻、有活力的90后团队所创立的公司。专注于IT领域的数据挖掘和阅读推荐等研究。旗下产品有：</p>
+		<p>好酷网（<a href="http://www.haoku.net" target="_blank">www.haoku.net</a>）。一款基于数据挖掘技的个性化阅读平台，通过不断优化的聚合算法学习用户的偏好为用户推荐最新的资讯。</p>
+	</div>
+	<div class="container team">
+		<h3>小酷团队</h3>
+		<p>很幸运，我们生在这个时代！互联网让一切皆有可能，改变了时间，改变了距离，改变了生活，成为了生活的必需品。</p>
+		<p>其实我们不是高富帅，我们没有多牛逼的技术，我们也没有多有钱的爹，甚至连有钱的叔叔也没有，我们就是一群屌丝，我们没有崇高的理想，没有伟大的目标，我们只是靠着仅有的这点能力，敲敲两行代码，时不时加班到凌晨2点，只求换得一餐温饱。</p>
+		<p>有人说：程序员和妓女一样，都是靠年轻吃饭～也许这就是好酷科技的由来，趁着年轻，把该做的事情给做了。在我们这个小小的团队里，每个成员都还没有毕业就匆匆出来创业了。</p>
+		<p>没了，只能写这么多了。如果你觉得还OK的话，就收藏一下或者分享一下。</p>
+	</div>
+	<div class="container tech">
+		<h3>技术架构</h3>
+		<p>好酷网基于python的Flask开源框架进行开发，采用数据挖掘技术抓取互联网上的最新资讯，通过聚类算法为用户推荐内容。</p>
+		<p>缓存采用Redis、数据库采用mongodb、mysql，云存储采用阿里云OSS。</p>
+		<p>前端为响应式设计，使用了less、javastript、JQuery等技术。</p>
+	</div>
+	<div class="container tech">
+		<h3>CEO感言 - 三只小猫的故事</h3>
+		<p>这是三只小猫从2014年6月开始，努力了半年的成果。</p>
+		<p></p>
+	</div>
+</div>
+{% endblock %}

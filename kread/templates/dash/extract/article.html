@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}{% if article %}{{ article.title }}{% else %}好像没有见到文章哦！ ^_^{% endif %}{% endblock %}
+{% block body %}
+<div class="container">
+{% if article %}
+	<div class="article clearfix">
+		<h1 class="article-title">{{ article.title }}</h1>
+		<div class="article-meta">
+			{% if article.src_name %}<span class="article-source">{{ article.src_name }}</span>{% endif %}
+			<span>{{ article.pubtime }}</span>
+
+
+			<span class="article-link pull-right"><a href="{{ url }}" target="_blank">查看原文</a></span>
+			<p>
+				<span>加入時間 :{{ article.created }}</span>
+				{% if tags %}<span class="article-tag pull-right">{{ tags }}</span>{% endif %}
+			<p>
+		</div>
+		<div class="article-content">{{ article.content | safe }}</div>
+		<div class="share-btn">
+			<a class="share-weibo" href="http://service.weibo.com/share/share.php?url={{ request.url }}&amp;title={{ article.title }}&amp;appkey=1343713053&amp;searchPic=false" title="分享到微博" target="_blank"></a> 
+			<a class="share-qzone" href="http://share.baidu.com/s?type=text&amp;searchPic=http://img1.gtimg.com/tech/pics/hv1/117/233/1711/111317307.jpg&amp;sign=on&amp;to=qzone&amp;url={{ request.url }}&amp;title={{ article.title }}" title="分享到QQ空间" target="_blank"></a>
+			<a class="share-tencent" href="http://share.v.t.qq.com/index.php?c=share&amp;a=index&amp;url={{ request.url }}&amp;appkey=801519648&amp;title={{ article.title }}&amp;line1=" title="分享到腾讯微博" target="_blank"></a>
+			<a class="share-qq" href="http://connect.qq.com/widget/shareqq/index.html?url={{ request.url }}&amp;title={{ article.title }}&amp;site=haoku.net" title="分享到QQ好友" target="_blank"></a>
+			<a class="share-weixin" target="_blank" data-toggle="modal" data-target="#share-modal" href="#"></a>
+		</div>
+		<div id="share-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog" style="width:202px;">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+						<h4 class="modal-title" id="submit-modal">打开微信，扫一扫</h4>
+					</div>
+					<div class="modal-body">
+						<img src="http://s.jiathis.com/qrcode.php?url={{ request.url }}">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="copyright" style="color:#888;text-align:center;font-size:14px;">Copyright 2014. 小酷实验室 - <a class="back" href="http://lab.haoku.net/">正文提取测试</a></div>
+	</div>
+{% else %}
+	<div class="error" style="margin:300px auto;text-align:center;color:#888;">
+		<h3 style="">Oh! No! 好像没有见到文章哦！ ^_^</h3>
+		<a class="btn btn-default btn-lg" href="javascript:history.go(-1);">后退</a>
+		<a class="btn btn-default btn-lg" href="{{ url_for('article.index') }}">首页</a>
+		<a class="btn btn-default btn-lg" href="{{ url }}">查看原文</a>
+	</div>
+{% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,214 @@
+{% extends "layout.html" %}
+{% import 'admin/lib.html' as lib with context %}
+{% import 'admin/static.html' as admin_static with context%}
+{% import 'admin/model/layout.html' as model_layout with context %}
+{% import 'admin/actions.html' as actionlib with context %}
+
+{% block sidebar_menu %}{{ sidebar_menu('mongo', admin_view.endpoint) }}{% endblock %}
+
+
+{% if search_supported %}
+{% block search_form %}
+	<form method="GET" action="{{ return_url }}" role="search">
+		{% if sort_column is not none %}
+		<input type="hidden" name="sort" value="{{ sort_column }}"></input>
+		{% endif %}
+		{% if sort_desc %}
+		<input type="hidden" name="desc" value="{{ sort_desc }}"></input>
+		{% endif %}
+		<div class="input-group custom-search-form">
+			<input type="text" name="search" class="form-control" value="{% if search %}{{ search }}{% endif %}" placeholder="搜索...">
+			<span class="input-group-btn">
+				<button class="btn btn-default" type="submit">
+					<i class="fa fa-search"></i>
+				</button>
+			</span>
+		</div>
+	</form>
+{% endblock %}
+{% endif %}
+
+
+{% block content %}
+	<div class="row">
+		<form class='form-inline' role='form'>
+			<div class="form-group">
+				<h1>爬虫 - {{ admin_view.name }}</h1>
+			</div>
+		</form>
+	</div>
+	<hr/>
+	<div class="row">
+		<div class="col-lg-12">
+			{% block model_list_table %}
+			<table class="table table-striped table-hover table-fixed-header table-mongo">
+				<thead class="header">
+					<tr>
+						{% block list_header scoped %}
+						{% if actions %}
+							<th class="list-checkbox-column">
+								<input type="checkbox" name="rowtoggle" class="action-rowtoggle" title="{{ _gettext('Select all records') }}" />
+							</th>
+						{% endif %}
+						{% set column = 0 %}
+						{% for c, name in list_columns %}
+						<th class="column-header">
+							{% if admin_view.is_sortable(c) %}
+								{% if sort_column == column %}
+									<a href="{{ sort_url(column, True) }}" title="按 {{ name }} 排序">
+										{{ name }}
+										{% if sort_desc %}
+											<span class="glyphicon glyphicon-chevron-up"></span>
+										{% else %}
+											<span class="glyphicon glyphicon-chevron-down"></span>
+										{% endif %}
+									</a>
+								{% else %}
+									<a href="{{ sort_url(column) }}" title="按 {{ name }} 排序">{{ name }}</a>
+								{% endif %}
+							{% else %}
+								{{ name }}
+							{% endif %}
+							{% if admin_view.column_descriptions.get(c) %}
+								<a class="glyphicon glyphicon-question-sign"
+								   title="{{ admin_view.column_descriptions[c] }}"
+								   href="javascript:void(0)" data-role="tooltip"
+								></a>
+							{% endif %}
+						</th>
+						{% set column = column + 1 %}
+						{% endfor %}
+						{% block list_row_actions_header %}
+						<th><a href="{{ sort_url(-1) }}">Actions</a></th>
+						{% endblock %}
+						{% endblock %}
+					</tr>
+				</thead>
+				{% for row in data %}
+				<tr>
+					{% block list_row scoped %}
+		                {% if actions %}
+						<td>
+							<input type="checkbox" name="rowid" class="action-checkbox" value="{{ get_pk_value(row) }}" title="{{ _gettext('Select record') }}" />
+						</td>
+						{% endif %}
+						{% for c, name in list_columns %}
+						<td>{{ get_value(row, c) }}</td>
+						{% endfor %}
+						{% block list_row_actions_column scoped %}
+						<td>
+							{% block list_row_actions scoped %}
+								{%- if admin_view.can_edit -%}
+								<a class="btn btn-info btn-xs" data-toggle="modal" data-target="#submit-modal" data-refresh="true" href="{{ get_url('.edit_view', id=get_pk_value(row), url=return_url) }}" title="编辑该记录">编辑</a>
+								{%- endif -%}
+
+								{%- if admin_view.can_delete -%}
+								<form class="form-inline" method="POST" action="{{ get_url('.delete_view', id=get_pk_value(row), url=return_url) }}">
+									{% if csrf_token %}
+									<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+									{% endif %}
+									<button class="btn btn-danger btn-xs" onclick="return confirm('你确定删除该记录?');" title="删除该记录">删除</button>
+								</form>
+								{%- endif -%}
+
+								{%- if admin_view.can_detail -%}
+									<a class="btn btn-primary btn-xs" data-toggle="modal" data-target="#submit-modal" data-refresh="true" href="{{ get_url('.detail_view', id=get_pk_value(row), url=return_url) }}" title="查看详情">查看</a>
+								{%- endif -%}
+
+								{% for deal in deals %}
+									{% if deal.ajax %}
+									<a class="btn btn-{{ deal.style }} btn-xs" href="{{ url_for(deal.url, id=get_pk_value(row), url=return_url) }}" title="{{ deal.title }}" target="_blank">{{ deal.title }}</a>	
+									{% else %}
+									<a class="btn btn-{{ deal.style }} btn-xs" data-toggle="modal" data-target="#submit-modal" data-refresh="true" href="{{ deal.url(deal, id=get_pk_value(row), url=return_url) }}" title="{{ deal.title }}" target="_blank">{{ deal.title }}</a>
+									{% endif %}
+								{% endfor %}
+
+							{% endblock %}
+						</td>
+						{% endblock %}
+					{% endblock %}
+				</tr>
+				{% else %}
+				<tr>
+					<td colspan="999">
+						{% block empty_list_message %}
+						<div class="text-center">
+							{{ admin_view.get_empty_list_message() }}
+						</div>
+						{% endblock %}
+					</td>
+				</tr>
+				{% endfor %}
+			</table>
+			{% endblock %}
+		</div>
+	</div>
+	<div class="row">
+		<div id="bottom-bar">
+			<div class="pull-left">
+				{%- if admin_view.can_create -%}
+				<a class="btn btn-info" data-toggle="modal" data-target="#submit-modal" data-refresh="true" href="{{ get_url('.create_view',  url=return_url) }}" style="margin:20px 0">添加新{{ admin_view.name }}</a>
+				{%- endif -%}
+
+				{% if actions %}
+					{% for p in actions %}
+						<a class="btn btn-danger" href="javascript:void(0)" onclick="return modelActions.execute('{{ p[0] }}');">{{ _gettext(p[1]) }}</a>
+					{% endfor %}
+				{% endif %}
+				
+			</div>
+
+			<div class="pull-right">
+				{{ lib.pager(page, num_pages, pager_url) }}
+			</div>
+		</div>
+		<div id="submit-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+				</div>
+			</div>
+		</div>
+	</div>
+	{{ actionlib.form(actions, get_url('.action_view')) }}
+{% endblock %}
+
+{% block footer_script %}
+	{{ super() }}
+    <script src="{{ admin_static.url(filename='admin/js/filters.js') }}"></script>
+    {{ lib.form_js() }}
+
+    {{ actionlib.script(_gettext('Please select at least one model.'),
+                      actions,
+                      actions_confirmation) }}
+
+    <script language="javascript">
+        (function($) {
+            $('[data-role=tooltip]').tooltip({
+                html: true,
+                placement: 'bottom'
+            });
+            {% if filter_groups %}
+                var filter = new AdminFilters(
+                    '#filter_form', '.field-filters',
+                    {{ filter_groups|tojson|safe }}
+                );
+            {% endif %}
+        })(jQuery);
+    </script>
+	<script>
+		$('.table-fixed-header').fixedHeader({bgColor: '#fff'});
+
+		$('#bottom-bar').affix({
+		  offset: {
+		    top: -1,
+		  }
+		});
+
+		$('#bottom-bar').css({width:($('.table').width() + 60)});
+
+		window.onresize = function () {
+			$('.table-fixed-header').fixedHeader({bgColor: '#fff'});
+			$('#bottom-bar').css({width:($('.table').width() + 60)});
+		}
+	</script>
+{% endblock %}

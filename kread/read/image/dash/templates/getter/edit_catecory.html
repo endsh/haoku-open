@@ -1,0 +1,25 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title" id="submit-modal">添加分类</h4>
+</div>
+<form class="form-horizontal" action="{{ request.url }}" method="post" role="form">
+	<div class="modal-body">
+		{{ form | kform(2) }}
+	</div>
+	<div class="modal-footer">
+		<button type="submit" class="btn btn-primary">保存</button>
+	</div>
+</form>
+
+{% block footer_script %}
+<script type="text/javascript">
+$("a[data-target=#submit-modal]").click(function(ev) {
+    ev.preventDefault();
+    var target = $(this).attr("href");
+
+    $("#submit-modal .modal-content").load(target, function() { 
+         $("#submit-modal").modal("show"); 
+    });
+});
+</script>
+{% endblock %} 

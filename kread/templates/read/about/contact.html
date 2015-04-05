@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+
+{% block subtitle %}联系我们{% endblock %}
+
+{% block main %}
+<div class="contact">
+	<div class="banner"></div>
+	<div class="menu text-center">
+		<div class="container">
+			<a href="/about">关于我们</a>
+			<a href="./join">加入我们</a>
+			<a href="./media">媒体报道</a>
+			<a href="./link">合作伙伴</a>
+			<a href="./contact" class="active">联系我们</a>
+			<a href="./update">更新日志</a>
+		</div>
+	</div>
+	<div class="container contact-us">
+		<h3>联系我们</h3>
+		<div class="row contact-type">
+			<div class="col-md-4 col-xs-12">
+				<a href="#">
+					<img src="/static/img/weibo.png">
+					<span>新浪微博：@小酷科技</span>
+				</a>
+			</div>
+			<div class="col-md-4 col-xs-12">
+				<a href="#">
+					<img src="/static/img/tencent.png">
+					<span>腾讯微博：@小酷科技</span>
+				</a>
+			</div>
+			<div class="col-md-4 col-xs-12">
+				<a href="#">
+					<img src="/static/img/weixin.png">
+					<span>微信公众号：@小酷科技</span>
+				</a>
+			</div>
+		</div>
+		<div class="contact-list">
+			<p>用户反馈：hr@haoku-inc.com</p>
+			<p>商务合作：hr@haoku-inc.com</p>
+			<p>媒体平台：hr@haoku-inc.com</p>
+			<p>公司地址：广州市番禺区建行路富庭东园C座405</p>
+		</div>
+	</div>
+</div>
+{% endblock %}

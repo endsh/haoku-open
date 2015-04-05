@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block sidebar_menu %}{{ sidebar_menu('control', 'debug') }}{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="col-md-3"><a class="btn btn-default btn-block">articles.ext_arts</a></div>
+	<div class="col-md-3"><a class="btn btn-default btn-block">articles.url_arts</a></div>
+	<div class="col-md-3"><a class="btn btn-default btn-block">articles.pag_arts</a></div>
+	<div class="col-md-3"><a class="btn btn-default btn-block">articles.mer_arts</a></div>
+	<div class="col-md-3"><a class="btn btn-default btn-block">articles.img_arts</a></div>
+	<div class="col-md-3"><a class="btn btn-default btn-block">articles.mea_arts</a></div>
+	<div class="col-md-3"><a class="btn btn-default btn-block">articles.sim_arts</a></div>
+	<div class="col-md-3"><a class="btn btn-default btn-block">articles.seg_arts</a></div>
+	<div class="col-md-3"><a class="btn btn-default btn-block">articles.tag_arts</a></div>
+</div>
+<div class="row">
+	<pre id="output" style="min-height: 400px"></pre>
+</div>
+<style>
+.row {
+	padding: 5px;
+}
+.col-md-3 {
+	padding: 5px;
+}
+</style>
+<script>
+$('.col-md-3 a').on('click', function () {
+	$.get('{{ url_for('control.dump')}}', {obj:$(this).html()}, function (data) {
+		$('#output').html(data)
+	})
+})
+</script>
+{% endblock %}

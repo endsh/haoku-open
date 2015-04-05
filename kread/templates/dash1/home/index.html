@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block nav %}
+	{{ navigation(current_user, 'home') }}
+{% endblock %}
+
+{% block content %}
+<style>
+.btn-item {
+	padding: 20px;
+	margin: 10px;
+}
+</style>
+<div class="row">
+	<div class="col-sm-3"><a href="#" class="btn btn-default btn-block btn-item"><span style="font-size:18pt;">网站</span></a></div>
+	<div class="col-sm-3"><a href="#" class="btn btn-default btn-block btn-item"><span style="font-size:18pt;">种子链接</span></a></div>
+	<div class="col-sm-3"><a href="#" class="btn btn-default btn-block btn-item"><span style="font-size:18pt;">来源模板</span></a></div>
+	<div class="col-sm-3"><a href="#" class="btn btn-default btn-block btn-item"><span style="font-size:18pt;">文章管理</span></a></div>
+	<div class="col-sm-3"><a href="#" class="btn btn-default btn-block btn-item"><span style="font-size:18pt;">实时监控</span></a></div>
+	<div class="col-sm-3"><a href="#" class="btn btn-default btn-block btn-item"><span style="font-size:18pt;">查看日志</span></a></div>
+	<div class="col-sm-3"><a href="#" class="btn btn-default btn-block btn-item"><span style="font-size:18pt;">阅读仪表盘</span></a></div>
+	<div class="col-sm-3"><a href="#" class="btn btn-default btn-block btn-item"><span style="font-size:18pt;">更多功能</span></a></div>
+</div>
+{% endblock %}

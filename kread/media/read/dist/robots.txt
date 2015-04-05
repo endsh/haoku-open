@@ -1,0 +1,6 @@
+User-Agent: *
+Crawl-delay: 0.1
+Disallow: /article?
+Disallow: /access?
+Disallow: /login?
+Disallow: /jsonp?

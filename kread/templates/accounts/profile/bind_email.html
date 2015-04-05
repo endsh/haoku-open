@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block subtitle %}邮箱验证服务{% endblock %}
+
+{% block content %}
+<div class="container">
+	<div class="col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 simple">
+		{% if msg %}
+		<div class="message">
+			<div class="alert alert-danger"><span>{{ msg }}</span></div>
+		</div>
+		{% else %}
+		<form action="{{ url_for('profile.bind_email') }}">
+			<input type="hidden" name="code" value="{{ code }}">
+			<input type="hidden" name="access" value="true">
+			<button type="submit" class="btn btn-success btn-lg btn-block">确认激活该邮箱？</button>
+		</form>
+		{% endif %}
+	</div>
+</div>
+{% endblock %}

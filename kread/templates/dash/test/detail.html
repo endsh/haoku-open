@@ -1,0 +1,29 @@
+<div id="submit-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog" style="width: 900px;">
+		<div class="modal-content">
+		</div>
+	</div>
+</div>
+<div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	<h4 class="modal-title" id="submit-modal">编辑</h4>
+</div>
+
+<div class="modal-body">
+	<table class="table table-striped table-hover">
+		<thead>
+			<tr>
+				<th>key</th>
+				<th>value</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for key, value in data.iteritems() %}
+			<tr>
+				<td>{{ key }}</td>
+				<td>{{ value | safe }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>

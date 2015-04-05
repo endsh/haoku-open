@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block subtitle %}登录{% endblock %}
+{% block body_class %}body-login{% endblock %}
+
+{% block content %}
+<div class="col-md-4 col-md-offset-4">
+	<h3 class="page-header text-center header text-muted">好酷仪表盘</h3>
+	<div class="k-message">{{ form | alert_first_error }}</div>
+	<form id="login-form" class="form-block" action="{{ url_for('account.login') }}" method="post">
+		{{ form | kform_inline }}
+		<button type="submit" class="btn btn-info btn-lg btn-outline btn-block">马上登录</button>
+	</form>
+	<div class="text-center login-link">
+		<a href="{{ url_for('account.find') }}">找回密码</a> | 
+		<a href="http://www.haoku.net/" target="_blank">好酷网</a>
+	</div>
+</div>
+{% endblock %}

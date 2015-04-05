@@ -1,0 +1,139 @@
+{% extends "layout.html" %}
+{% block header_script %}
+<script type="text/javascript" src="http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js" charset="utf-8"
+data-appid="101169830" data-redirecturi="http://accounts.test.haoku.net/accounts/connect"></script>
+{% endblock %}
+
+{% block title %}登录{% endblock %}
+
+
+{% block content %}
+<style type="text/css">
+a {
+	color: #222;
+	text-decoration: none;
+	outline: 0px none;
+}
+.buttons{
+	padding-top: 29px;
+}
+.buttons a {
+	display: inline-block;
+	margin-right: 20px;
+	width: 70px;
+	height: 70px;
+	background: url('/static/img/login_icons.png') no-repeat scroll 0px 0px transparent;
+}
+a.weibo:hover{
+	background-position: 0px -90px;
+}
+
+a.qzone {
+	background-position: -90px 0px;
+}
+a.qzone:hover{
+	background-position: -90px -90px;
+}
+a.douban {
+	background-position: -180px 0px;
+}
+a.douban:hover{
+	background-position: -180px -90px;
+}
+a.renren {
+	background-position: -270px 0px;
+}
+a.renren:hover{
+	background-position: -270px -90px;
+}
+a:last-child {
+	margin-right: 0px;
+}
+.wrapper{
+	width: 280px;
+	text-align: left;
+	margin-left: 18%;
+}
+</style>
+<span id="qqLoginBtn"></span>
+<script type="text/javascript">
+   //调用QC.Login方法，指定btnId参数将按钮绑定在容器节点中
+   QC.Login({
+       //btnId：插入按钮的节点id，必选
+       btnId:"qzone",    
+       //用户需要确认的scope授权项，可选，默认all
+       scope:"all",
+       //按钮尺寸，可用值[A_XL| A_L| A_M| A_S|  B_M| B_S| C_S]，可选，默认B_S
+       size: "A_XL"
+   }, function(reqData, opts){//登录成功
+       //根据返回数据，更换按钮显示状态方法
+       var dom = document.getElementById(opts['btnId']),
+       _logoutTemplate=[
+            //头像
+            '<span><img src="{figureurl}" class="{size_key}"/></span>',
+            //昵称
+            '<span>{nickname}</span>',
+            //退出
+            '<span><a href="javascript:QC.Login.signOut();">退出</a></span>'    
+       ].join("");
+       dom && (dom.innerHTML = QC.String.format(_logoutTemplate, {
+           nickname : QC.String.escHTML(reqData.nickname), //做xss过滤
+           figureurl : reqData.figureurl
+       }));
+   }, function(opts){//注销成功
+         alert('QQ登录 注销成功');
+   }
+);
+</script>
+<div class="btn btn-default k-logo">K</div>
+
+
+<div class="k-box k-input-box k-login-box clearfix">
+
+	<div class="buttons">
+		<a title="微博帐号登录"  href="{{ url_for('account.weibo_login') }}" target="_blank" class="weibo"></a>
+		<a  href="javascript:;" title="QQ帐号登录" rel="nofollow" class="qzone" id='qzone'></a>
+<!-- 		<a  href="javascript:;" onclick="" title="QQ帐号登录" rel="nofollow" class="qzone" id='qzone'></a>
+ -->		<a title="豆瓣帐号登录" rel="nofollow" class="douban"></a>
+		<a title="人人帐号登录" rel="nofollow" class="renren"></a>
+	</div>
+	<h3 class="page-header" style="font-weight:100;">好酷 - 登录</h3>
+	<div class="k-message">{{ form | alert_first_error }}</div>
+	<div class="wrapper">
+		<form id="login-form" class="login-form" action="{{ url_for('account.login', next=next) }}" method="post">
+			{{ form | kform_inline }}
+			<button type="submit" class="btn btn-primary btn-lg btn-block">马上登录</button>
+		</form>
+		<div class="pull-left">
+			<a href="{{ url_for('account.forget_pass') }}">忘记密码？</a>
+		</div>
+		<div class="pull-right">
+			<a href="{{ url_for('account.register') }}">马上注册</a>
+		</div>
+		
+	</div>
+	<div>
+		<span id="tencent" ></span>
+	</div>
+</div>
+{% endblock %}
+
+{% block footer_script %}
+<script type="text/javascript">
+var message = {
+	usernameOrEmailEmpty: '用户名或邮箱不能为空',
+	passwordEmpty: '密码不能为空'
+};
+
+$('#login-form').submit(function () {
+	if ($.trim($('#username_or_email').val()).length == 0) {
+		error(message.usernameOrEmailEmpty);
+	} else if ($('#password').val().length == 0) {
+		error(message.passwordEmpty);
+	} else {
+		return true;
+	}
+	return false;
+});
+</script>
+{% endblock %}

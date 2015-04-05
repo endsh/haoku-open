@@ -1,0 +1,61 @@
+{% extends "admin/layout.html" %}
+{% import 'admin/lib.html' as lib with context %}
+
+{% block sidebar_menu %}{{ sidebar_menu('mongo', admin_view.endpoint) }}{% endblock %}
+
+
+{% if search_supported %}
+{% block search_form %}
+	<form method="GET" action="{{ return_url }}" role="search">
+		{% if sort_column is not none %}
+		<input type="hidden" name="sort" value="{{ sort_column }}"></input>
+		{% endif %}
+		{% if sort_desc %}
+		<input type="hidden" name="desc" value="{{ sort_desc }}"></input>
+		{% endif %}
+		<div class="input-group custom-search-form">
+			<input type="text" name="search" class="form-control" value="{% if search %}{{ search }}{% endif %}" placeholder="搜索...">
+			<span class="input-group-btn">
+				<button class="btn btn-default" type="submit">
+					<i class="fa fa-search"></i>
+				</button>
+			</span>
+		</div>
+	</form>
+{% endblock %}
+{% endif %}
+
+
+{% block content %}
+<style type="text/css">
+.col-md-10 {
+	width: 79.33333%;
+}
+.col-md-2 {
+	width: 20.666666%;
+}
+
+.navbar-fixed-top, .navbar-fixed-bottom {
+	z-index: 1000;
+}
+
+.edui-body-container {
+	border-radius: 0;
+	box-shadow: none;
+}
+
+.edui-body-container:focus {
+	border-color: transparent;
+	box-shadow: none;
+}
+</style>
+
+<div class="row">
+	<h1 class="page-header">编辑{{ admin_view.name }}({{ model.id }})</h1>
+</div>
+
+{% call lib.form_tag(form, action=request.url) %}
+	{{ lib.render_form_fields(form, form_opts=form_opts) }}
+	{{ lib.render_form_buttons() }}
+{% endcall %}
+{% endblock %}

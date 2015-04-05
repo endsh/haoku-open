@@ -1,0 +1,309 @@
+# coding: utf-8
+import sys
+import json
+import time
+import math
+import pymongo
+import hashlib
+from oss.oss_api import OssAPI
+from utils import load_data, save_data, remove_data
+
+
+class OssFile(object):
+	""" oss file class """
+
+	def __init__(self, conf):
+		self.conf = conf
+		self.oss = OssAPI(
+			conf['host'], 
+			conf['access_id'], 
+			conf['secret_access_key'])
+
+	def get_link(self, name):
+		return conf['link'] % name
+
+	def get(self, name):
+		res = self.oss.get_object(self.conf['bucket'], name)
+		if (res.status / 100) == 2:
+			return res.read()
+		return ''
+
+	def put(self, name, content, type):
+		path = '%s.%s' % (name, type)
+		res = self.oss.put_object_from_string(self.conf['bucket'], path, content)
+		if (res.status / 100) == 2:
+			return path
+		return ''
+
+	def remove(self, name):
+		pass
+
+
+class LocalFile(object):
+	""" mongodb file class """
+
+	def __init__(self, conf):
+		""" init class """
+		self.conf = conf
+		self.path = conf['path']
+
+	def get_link(self, name):
+		return conf['link'] % name
+
+	def get(self, name):
+		""" get file content """
+		return load_data(self.path + '/' + name)
+
+	def put(self, name, content, type):
+		""" save file content """
+		path = '%s/%s.%s' % ('/'.join(name[:3]), name, type)
+		save_data(self.path + '/' + path, content)
+		return path
+
+	def remove(self, name):
+		remove_data(name)
+
+
+class MongoIndex(object):
+
+	def __init__(self, db):
+		self.db = db
+		self.index = db['index']
+
+	def rank(self, each):
+		return (max(each['n'], 8) + math.log(each['p'] + 1)) * 50 + (each['t'] - 946656000.0) / 3600
+
+	def add(self, word, id, num, pic, pubtime):
+		word = word.lower()
+		self.remove(word, id)
+		each = {'i':id, 'n':num, 'p':pic, 't':pubtime}
+		each['r'] = self.rank(each)
+		push = {'index':{'$each':[each], '$slice':1000, '$sort':{'r':-1}}}
+		self.index.update({'_id':word}, {'$push':push}, True)
+
+	def remove(self, word, id):
+		word = word.lower()
+		self.index.update({'_id':word}, {'$pull':{'index':{'i':id}}}, True)
+
+	def find(self, word):
+		word = word.lower()
+		return self.index.find_one({'_id':word})
+
+	def drop(self):
+		self.index.drop()
+
+
+class MongoSim(object):
+
+	def __init__(self, db):
+		self.db = db
+		self.sim = db['sim']
+		self.sims = [db['sim%d' % i] for i in xrange(4)]
+
+	def num2parts(self, num):
+		num = num + sys.maxint
+		return [int((num & (65535 << i)) >> i) for i in (0, 16, 32, 48)]
+
+	def near(self, num):
+		nums = set()
+		parts = self.num2parts(num)
+		for i, sim in enumerate(self.sims):
+			for row in sim.find({'part':parts[i]}, {'_id':1}):
+				nums.add(row['_id'])
+		for n in nums:
+			if self.distance(num, n) < 3:
+				return n
+
+	def unset(self, _id, key):
+		if key == True:
+			row = self.sim.find_one({'_id':_id})
+			if row:
+				for sim in self.sims:
+					sim.remove({'_id':row['num']})
+				if row['ids']:
+					row['_id'], row['num'] = row['ids'].popitems()
+					parts = self.num2parts(row['num'])
+					for i, sim in enumerate(self.sims):
+						sim.save({'_id':row['num'], 'part':parts[i]})
+					self.sim.save(row)
+		elif key != False:
+			self.sim.update({'_id':key}, {'$unset':{'ids.%s' % _id:''}})
+
+	def save(self, _id, num, near):
+		if near is not None:
+			row = self.sim.find_one({'num':near}, {'_id':1})
+			if row:
+				self.sim.update({'_id':row['_id']}, {'$set':{'ids.%s' % _id:num}})
+				return row['_id']
+		
+		parts = self.num2parts(num)
+		for i, sim in enumerate(self.sims):
+			sim.save({'_id':num, 'part':parts[i]})
+		self.sim.save({
+			'_id':_id,
+			'num':num,
+			'ids':{},
+		})
+		return True
+
+	def distance(self, num, other):
+		num = num + sys.maxint
+		other = other + sys.maxint
+		x = (num ^ other) & ((1 << 64) - 1)
+		ans = 0
+		while x:
+			ans += 1
+			x &= x - 1
+		return ans
+
+	def create_index(self):
+		self.sim.create_index([('num', pymongo.ASCENDING)])
+		for sim in self.sims:
+			sim.create_index([('part', pymongo.ASCENDING)])
+
+	def drop(self):
+		self.sim.drop()
+		for sim in self.sims:
+			sim.drop()
+
+
+class MongoSpider(object):
+	""" spider mongodb connection class """
+
+	def __init__(self, conf):
+		self.conn = pymongo.MongoClient(
+			host=conf['host'], 
+			port=conf['port'],
+			use_greenlets=conf['use_greenlets'])
+		if conf['user']:
+			self.conn.admin.authenticate(conf['user'], conf['password'])
+
+		self.db = self.conn.read
+		self.domain = self.db['domain']
+		self.catecory = self.db['catecory']
+		self.template = self.db['template']
+		self.article = self.db['article']
+		self.image = self.db['image']
+		self.word = self.db['word']
+		self.keyword = self.db['keyword']
+		self.sim = MongoSim(self.conn.sim)
+
+		if conf['storage'] == 'oss':
+			self.html_file = OssFile(conf['html_file'])
+		else:
+			self.html_file = LocalFile(conf['html_file'])
+
+	def clear(self):
+		self.clear_db()
+
+	def clear_db(self):
+		self.conn.drop_database('read')
+
+
+class MongoWeb(object):
+	""" web mongodb connection class """
+
+	def __init__(self, conf):
+		self.conn = pymongo.MongoClient(
+			host=conf['host'], 
+			port=conf['port'],
+			use_greenlets=conf['use_greenlets'])
+		if conf['user']:
+			self.conn.admin.authenticate(conf['user'], conf['password'])
+
+		self.db = self.conn.read
+		self.index = self.db['index']
+		self.article = self.db['article']
+		self.image = self.db['image']
+		self.index = MongoIndex(self.conn.index)
+
+		if conf['storage'] == 'oss':
+			self.image_file = OssFile(conf['image_file'])
+		else:
+			self.image_file = LocalFile(conf['image_file'])
+
+class MongoTech(object):
+	""" spider mongodb connection class """
+	pass
+
+class MongoLater(object):
+	""" spider mongodb connection class """
+
+	def __init__(self, conf):
+		self.conn = pymongo.MongoClient(
+			host=conf['host'], 
+			port=conf['port'],
+			use_greenlets=conf['use_greenlets'])
+		if conf['user']:
+			self.conn.admin.authenticate(conf['user'], conf['password'])
+		self.db = self.conn.later
+		self.article = self.db['article']
+
+	def clear(self):
+		self.clear_db()
+
+	def clear_db(self):
+		self.conn.drop_database('later')
+
+
+class MongoImage(object):
+	""" web mongodb connection class """
+
+	def __init__(self, conf, path):
+		self.conn = pymongo.MongoClient(
+			host=conf['host'], 
+			port=conf['port'],
+			use_greenlets=conf['use_greenlets'])
+		if conf['user']:
+			self.conn.admin.authenticate(conf['user'], conf['password'])
+		self.db = self.conn.read
+		self.domain = self.db['domain']
+		self.catecory = self.db['catecory']
+		self.album = self.db['album']
+		self.file = LocalFile(path, path)
+
+
+class MongoGetter(object):
+	""" spider mongodb connection class """
+
+	def __init__(self, conf):
+		self.conn = pymongo.MongoClient(
+			host=conf['host'], 
+			port=conf['port'],
+			use_greenlets=conf['use_greenlets'])
+		if conf['user']:
+			self.conn.admin.authenticate(conf['user'], conf['password'])
+		self.db = self.conn.getter
+		self.domain = self.db['domain']
+		self.catecory = self.db['catecory']
+		self.template = self.db['template']
+		self.link = self.db['link']
+		self.word = self.db['word']
+
+	def clear(self):
+		self.clear_db()
+
+	def clear_db(self):
+		self.conn.drop_database('getter')
+
+
+class MongoBest(object):
+	""" spider mongodb connection class """
+
+	def __init__(self, conf):
+		self.conn = pymongo.MongoClient(
+			host=conf['host'], 
+			port=conf['port'],
+			use_greenlets=conf['use_greenlets'])
+		if conf['user']:
+			self.conn.admin.authenticate(conf['user'], conf['password'])
+		self.db = self.conn.best
+		self.domain = self.db['domain']
+		self.catecory = self.db['catecory']
+		self.template = self.db['template']
+
+	def clear(self):
+		self.clear_db()
+
+	def clear_db(self):
+		self.conn.drop_database('best')
